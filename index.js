@@ -8,8 +8,10 @@ const server = net.createServer((socket) => {
     socket.on("end", () => {
         console.log("client disconnected");
     });
-    socket.write("server says hello\r\n");
-    socket.pipe(socket);
+    socket.write("Echo server\r\n");
+    socket.on("data", (data) => {
+        socket.write(data);
+    });
 });
 
 server.on("error", (err) => {
