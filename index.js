@@ -2,8 +2,10 @@ const net = require("net");
 
 const PORT = 1337;
 const IP = "0.0.0.0";
+const MAX_CONNECTIONS = 5;
 
 const server = net.createServer((socket) => {
+    server.maxConnections = MAX_CONNECTIONS;
     socket.write("Echo server\r\n");
     socket.on("data", (data) => {
         socket.write(data);
@@ -17,7 +19,7 @@ const server = net.createServer((socket) => {
 });
 
 server.on("error", (err) => {
-    throw err;
+    console.log("Error: " + err);
 });
 
 server.on("connection", (socket) => {
