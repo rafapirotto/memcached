@@ -30,7 +30,7 @@ const server = net.createServer((socket) => {
                             args[1]
                         } ${obj.flags.toString()} ${obj.bytes.toString()}${terminator}${obj.value.toString()}${terminator}END${terminator}`
                     );
-                else socket.write("error" + terminator);
+                else socket.write(`END${terminator}`);
                 break;
             default:
                 break;
@@ -49,10 +49,10 @@ server.on("error", (err) => {
 });
 
 server.on("connection", (socket) => {
+    socket.id = id++;
     console.log(
         `Client connected: ${socket.remoteAddress}:${socket.remotePort}`
     );
-    socket.id = id++;
     server.getConnections((error, count) => {
         console.log(`Concurrent connections to the server: ${count}`);
     });
