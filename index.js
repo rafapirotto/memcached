@@ -1,5 +1,14 @@
 const net = require("net");
-const { parseArgsStringToArgv } = require("string-argv");
+const { v4: uuidv4 } = require("uuid");
+
+const Parser = require("./Parser");
+const CommandFactory = require("./CommandFactory");
+const { ERROR_MESSAGE } = require("./utils/messages");
+const InvalidCommandError = require("./errors/InvalidCommandError");
+const { TERMINATOR } = require("./utils");
+
+const parser = new Parser();
+const commandFactory = new CommandFactory();
 
 const PORT = 1337;
 const IP = "0.0.0.0";
@@ -9,31 +18,19 @@ const storage = [
     { key: "test2", bytes: 2, value: 24, flags: 0, exptime: 900 },
     { key: "test3", bytes: 2, value: 23, flags: 0, exptime: 900 },
 ];
-let id = 0;
-const terminator = "\r\n";
 
 const server = net.createServer((socket) => {
     server.maxConnections = MAX_CONNECTIONS;
     socket.on("data", (data) => {
-        let parsedData = data.toString("utf-8");
-        parsedData = parsedData.split(terminator)[0];
-        const args = parseArgsStringToArgv(parsedData);
-        const command = args[0];
-        const options = args.slice(1);
-        // Buffer.byteLength(parsedData) -> returns the number of bytes required to store a string
-        switch (command) {
-            case "get":
-                const obj = storage.find(({ key }) => key == args[1]);
-                if (obj)
-                    socket.write(
-                        `VALUE ${
-                            args[1]
-                        } ${obj.flags.toString()} ${obj.bytes.toString()}${terminator}${obj.value.toString()}${terminator}END${terminator}`
-                    );
-                else socket.write(`END${terminator}`);
-                break;
-            default:
-                break;
+        try {
+            const parsedRequest = parser.parse(data);
+            const command = commandFactory.create(parsedRequest);
+            const result = command.execute(storage);
+            sendResponse(socket, result);
+        } catch (error) {
+            if (error instanceof InvalidCommandError) {
+                sendResponse(socket, ERROR_MESSAGE);
+            }
         }
     });
 
@@ -49,7 +46,7 @@ server.on("error", (err) => {
 });
 
 server.on("connection", (socket) => {
-    socket.id = id++;
+    socket.id = uuidv4();
     console.log(
         `Client connected: ${socket.remoteAddress}:${socket.remotePort}`
     );
@@ -61,3 +58,7 @@ server.on("connection", (socket) => {
 server.listen(PORT, IP, () => {
     console.log(`Server listening at ${IP}:${PORT}`);
 });
+
+sendResponse = (socket, text) => {
+    socket.write(`${text}${TERMINATOR}`);
+};
