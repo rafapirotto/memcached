@@ -7,7 +7,11 @@ class Get {
 
     execute(storage) {
         const keyToRetrieve = this.options[0];
-        const obj = storage.find(({ key }) => key === keyToRetrieve);
+        const retrievedData = storage.find(({ key }) => key === keyToRetrieve);
+        return this.getOutput(retrievedData);
+    }
+
+    getOutput(obj) {
         let response = "END";
         if (obj)
             response = `VALUE ${keyToRetrieve} ${obj.flags.toString()} ${obj.bytes.toString()}${TERMINATOR}${
