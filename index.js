@@ -14,9 +14,9 @@ const PORT = 1337;
 const IP = "0.0.0.0";
 const MAX_CONNECTIONS = 5;
 const storage = [
-    { key: "test", bytes: 2, value: 25, flags: 0, exptime: 900 },
-    { key: "test2", bytes: 2, value: 24, flags: 0, exptime: 900 },
-    { key: "test3", bytes: 2, value: 23, flags: 0, exptime: 900 },
+    { key: "test", bytes: 2, value: "25", flags: 0, exptime: 900 },
+    { key: "test2", bytes: 2, value: "24", flags: 0, exptime: 900 },
+    { key: "test3", bytes: 2, value: "23", flags: 0, exptime: 900 },
 ];
 
 const server = net.createServer((socket) => {

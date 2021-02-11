@@ -13,10 +13,10 @@ class Get {
 
     getOutput(obj) {
         let response = "END";
-        if (obj)
-            response = `VALUE ${keyToRetrieve} ${obj.flags.toString()} ${obj.bytes.toString()}${TERMINATOR}${
-                obj.value
-            }${TERMINATOR}END`;
+        if (obj) {
+            const { key, flags, bytes, value } = obj;
+            response = `VALUE ${key} ${flags.toString()} ${bytes.toString()}${TERMINATOR}${value}${TERMINATOR}END`;
+        }
         return response;
     }
 }

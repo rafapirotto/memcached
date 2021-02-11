@@ -1,4 +1,4 @@
-const Get = require("./Commands/Get");
+const Get = require("./commands/Get");
 const InvalidCommandError = require("./errors/InvalidCommandError");
 
 class CommandFactory {
