@@ -1,13 +1,14 @@
 const { TERMINATOR } = require("../utils");
 
 class Get {
-    constructor(options) {
+    constructor(options, storage) {
         this.options = options;
+        this.storage = storage;
     }
 
-    execute(storage) {
+    execute() {
         const keyToRetrieve = this.options[0];
-        const retrievedData = storage.find(({ key }) => key === keyToRetrieve);
+        const retrievedData = this.storage.find(keyToRetrieve);
         return this.getOutput(retrievedData);
     }
 

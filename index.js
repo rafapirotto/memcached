@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const Parser = require("./Parser");
 const CommandFactory = require("./CommandFactory");
 const { ERROR_MESSAGE } = require("./utils/messages");
-const InvalidCommandError = require("./errors/InvalidCommandError");
+const { InvalidCommandError, NoOptionsError } = require("./errors");
 const { TERMINATOR } = require("./utils");
 
 const parser = new Parser();
@@ -13,11 +13,6 @@ const commandFactory = new CommandFactory();
 const PORT = 1337;
 const IP = "0.0.0.0";
 const MAX_CONNECTIONS = 5;
-const storage = [
-    { key: "test", bytes: 2, value: "25", flags: 0, exptime: 900 },
-    { key: "test2", bytes: 2, value: "24", flags: 0, exptime: 900 },
-    { key: "test3", bytes: 2, value: "23", flags: 0, exptime: 900 },
-];
 
 const server = net.createServer((socket) => {
     server.maxConnections = MAX_CONNECTIONS;
@@ -25,10 +20,13 @@ const server = net.createServer((socket) => {
         try {
             const parsedRequest = parser.parse(data);
             const command = commandFactory.create(parsedRequest);
-            const result = command.execute(storage);
+            const result = command.execute();
             sendResponse(socket, result);
         } catch (error) {
-            if (error instanceof InvalidCommandError) {
+            if (
+                error instanceof InvalidCommandError ||
+                error instanceof NoOptionsError
+            ) {
                 sendResponse(socket, ERROR_MESSAGE);
             }
         }
