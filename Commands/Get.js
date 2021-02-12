@@ -7,17 +7,22 @@ class Get {
     }
 
     execute() {
-        const keyToRetrieve = this.options[0];
-        const retrievedData = this.storage.find(keyToRetrieve);
-        return this.getOutput(retrievedData);
+        const keysToRetrieve = this.options;
+        let retrievedKeys = [];
+        keysToRetrieve.forEach((keyToRetrieve) => {
+            const retrievedKey = this.storage.find(keyToRetrieve);
+            if (retrievedKey) retrievedKeys.push(retrievedKey);
+        });
+        return this.getOutput(retrievedKeys);
     }
 
-    getOutput(obj) {
-        let response = "END";
-        if (obj) {
-            const { key, flags, bytes, value } = obj;
-            response = `VALUE ${key} ${flags.toString()} ${bytes.toString()}${TERMINATOR}${value}${TERMINATOR}END`;
-        }
+    getOutput(retrievedKeys) {
+        let response = "";
+        retrievedKeys.forEach((retrievedKey) => {
+            const { key, flags, bytes, value } = retrievedKey;
+            response += `VALUE ${key} ${flags.toString()} ${bytes.toString()}${TERMINATOR}${value}${TERMINATOR}`;
+        });
+        response += "END";
         return response;
     }
 }
