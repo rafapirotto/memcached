@@ -1,14 +1,14 @@
 const TERMINATOR = "\r\n";
-const COMMANDS = [
-    "get",
-    "gets",
-    "set",
-    "add",
-    "replace",
-    "append",
-    "prepend",
-    "cas",
-];
+const COMMANDS = {
+    get: "get",
+    gets: "gets",
+    set: "set",
+    add: "add",
+    replace: "replace",
+    append: "append",
+    prepend: "prepend",
+    cas: "cas",
+};
 
 module.exports = {
     TERMINATOR,
