@@ -8,7 +8,7 @@ class Gets {
 
     execute() {
         const keys = this.options;
-        return this.getOutput(keys);
+        return { response: this.getOutput(keys) };
     }
 
     getOutput(keys) {

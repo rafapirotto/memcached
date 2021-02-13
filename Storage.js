@@ -1,6 +1,7 @@
 class Storage {
     constructor() {
         // this.storage = [];
+        this.cas = 0;
         this.storage = [
             {
                 key: "test1",
@@ -28,8 +29,31 @@ class Storage {
             },
         ];
     }
+
     find(key) {
         return this.storage.find((obj) => key === obj.key);
+    }
+
+    nextCas() {
+        return this.cas++;
+    }
+
+    set({ key, value, flags, exptime, bytes }) {
+        const objIndex = this.storage.findIndex((obj) => obj.key === key);
+        const objToInsert = {
+            key,
+            value,
+            flags,
+            exptime,
+            bytes,
+        };
+        if (objIndex !== -1) {
+            objToInsert.cas = this.storage[objIndex].cas;
+            this.storage[objIndex] = objToInsert;
+        } else {
+            objToInsert.cas = this.nextCas();
+            this.storage.push(objToInsert);
+        }
     }
 }
 
