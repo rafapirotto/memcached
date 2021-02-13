@@ -32,7 +32,10 @@ const server = net.createServer((socket) => {
     socket.on("data", (data) => {
         try {
             const parsedRequest = parser.parse(data);
-            const command = commandFactory.create(parsedRequest);
+            const command = commandFactory.create(
+                parsedRequest,
+                socket.expectedData
+            );
             let result = null;
             if (socket.expectedData) {
                 if (command instanceof DataBlock) {

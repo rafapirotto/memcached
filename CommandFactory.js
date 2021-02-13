@@ -6,14 +6,13 @@ const { COMMANDS } = require("./utils/index");
 class CommandFactory {
     constructor() {}
 
-    create(parsedRequest) {
+    create(parsedRequest, expectedData) {
         const command = parsedRequest[0];
         const options = parsedRequest.slice(1);
         if (this.commandExists(command) && options.length === 0)
             throw new NoOptionsError();
-        if (!this.commandExists(command) && options.length > 0)
+        if (!this.commandExists(command) && !expectedData)
             throw new InvalidCommandError();
-        // TODO: caso donde pongo "h"
         switch (command) {
             case COMMANDS.get:
                 return new Get(options, storage);
