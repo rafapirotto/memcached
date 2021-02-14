@@ -39,18 +39,14 @@ const server = net.createServer((socket) => {
             let result = null;
             if (socket.expectedData) {
                 if (command instanceof DataBlock) {
-                    console.log("1");
                     result = command.execute(socket.expectedData);
                 } else {
-                    console.log("2");
                     throw new DataBlockExpectedError();
                 }
             } else {
                 if (typeof command === DataBlock) {
-                    console.log("3");
                     throw new NoDataBlockExpectedError();
                 } else {
-                    console.log("4");
                     result = command.execute();
                 }
             }
@@ -58,8 +54,6 @@ const server = net.createServer((socket) => {
             else socket.expectedData = null;
             sendResponse(socket, result.response);
         } catch (error) {
-            console.log(error.message);
-            console.log(error);
             if (
                 error instanceof InvalidCommandError ||
                 error instanceof NoOptionsError ||
