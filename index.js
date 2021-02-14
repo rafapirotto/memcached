@@ -23,7 +23,7 @@ const { DataBlock } = require("./commands/index");
 const parser = new Parser();
 const commandFactory = new CommandFactory();
 
-// TODO: move to .env
+// TODO: move to .env file
 const PORT = 1337;
 const IP = "0.0.0.0";
 const MAX_CONNECTIONS = 5;
