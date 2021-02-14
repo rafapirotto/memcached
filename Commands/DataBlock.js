@@ -12,8 +12,6 @@ class DataBlock {
         try {
             parsedBytes = parseInt(bytes, 10);
         } catch (error) {
-            console.log(error);
-            console.log(error.message);
             throw new BadCommandLineFormatError();
         }
         if (Buffer.byteLength(this.data) !== parsedBytes)
