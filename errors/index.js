@@ -3,7 +3,7 @@ const NoOptionsError = require("./NoOptionsError");
 const WrongArgumentNumberError = require("./WrongArgumentNumberError");
 const DataBlockExpectedError = require("./DataBlockExpectedError");
 const NoDataBlockExpectedError = require("./NoDataBlockExpectedError");
-const WrongByteLength = require("./WrongByteLength");
+const WrongByteLengthError = require("./WrongByteLengthError");
 const BadCommandLineFormatError = require("./BadCommandLineFormatError");
 
 module.exports = {
@@ -12,6 +12,6 @@ module.exports = {
     WrongArgumentNumberError,
     DataBlockExpectedError,
     NoDataBlockExpectedError,
-    WrongByteLength,
+    WrongByteLengthError,
     BadCommandLineFormatError,
 };

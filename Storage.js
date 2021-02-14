@@ -2,6 +2,7 @@ class Storage {
     constructor() {
         // this.storage = [];
         this.cas = 0;
+        // TODO: remove hardcoded storage
         this.storage = [
             {
                 key: "test1",

@@ -1,4 +1,7 @@
-const { WrongByteLength, BadCommandLineFormatError } = require("../errors");
+const {
+    WrongByteLengthError,
+    BadCommandLineFormatError,
+} = require("../errors");
 
 class DataBlock {
     constructor(data, storage) {
@@ -15,7 +18,7 @@ class DataBlock {
             throw new BadCommandLineFormatError();
         }
         if (Buffer.byteLength(this.data) !== parsedBytes)
-            throw new WrongByteLength();
+            throw new WrongByteLengthError();
         //byteLength -> returns the number of bytes required to store a string
         //TODO: switch with different commands: add, replace,etc
         this.storage.set({ key, value: this.data, flags, exptime, bytes });

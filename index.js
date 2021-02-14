@@ -14,7 +14,7 @@ const {
     WrongArgumentNumberError,
     DataBlockExpectedError,
     NoDataBlockExpectedError,
-    WrongByteLength,
+    WrongByteLengthError,
     BadCommandLineFormatError,
 } = require("./errors");
 const { TERMINATOR } = require("./utils");
@@ -23,9 +23,11 @@ const { DataBlock } = require("./commands/index");
 const parser = new Parser();
 const commandFactory = new CommandFactory();
 
+// TODO: move to .env
 const PORT = 1337;
 const IP = "0.0.0.0";
 const MAX_CONNECTIONS = 5;
+//
 
 const server = net.createServer((socket) => {
     server.maxConnections = MAX_CONNECTIONS;
@@ -63,7 +65,7 @@ const server = net.createServer((socket) => {
                 sendResponse(socket, ERROR_MESSAGE);
             } else if (
                 error instanceof DataBlockExpectedError ||
-                error instanceof WrongByteLength
+                error instanceof WrongByteLengthError
             ) {
                 sendResponse(socket, BAD_DATA_CHUNK);
             } else if (error instanceof BadCommandLineFormatError) {
