@@ -1,19 +1,21 @@
-const { parseArgsStringToArgv } = require("string-argv");
+/* eslint-disable class-methods-use-this */
+const { parseArgsStringToArgv } = require('string-argv');
 
-const { TERMINATOR } = require("./utils");
+const { TERMINATOR } = require('./utils');
 
 class Parser {
-    constructor() {}
+  constructor() {}
 
-    parse(request) {
-        // request comes inside a Buffer class
-        // therefore it is converted to string
-        let requestAsString = request.toString("utf-8");
-        // new line gets removed
-        requestAsString = requestAsString.split(TERMINATOR)[0];
-        // data gets transformed to array like ["command","opt1",...,"optn"]
-        const parsedRequest = parseArgsStringToArgv(requestAsString);
-        return parsedRequest;
-    }
+  parse(request) {
+    // request comes inside a Buffer class
+    // therefore it is converted to string
+    let requestAsString = request.toString('utf-8');
+    // new line gets removed
+    // eslint-disable-next-line prefer-destructuring
+    requestAsString = requestAsString.split(TERMINATOR)[0];
+    // data gets transformed to array like ["command","opt1",...,"optn"]
+    const parsedRequest = parseArgsStringToArgv(requestAsString);
+    return parsedRequest;
+  }
 }
 module.exports = Parser;

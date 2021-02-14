@@ -1,11 +1,11 @@
-const Get = require("./Get");
-const Gets = require("./Gets");
-const Set = require("./Set");
-const DataBlock = require("./DataBlock");
+const Get = require('./Get');
+const Gets = require('./Gets');
+const Set = require('./Set');
+const DataBlock = require('./DataBlock');
 
 module.exports = {
-    Get,
-    Gets,
-    Set,
-    DataBlock,
+  Get,
+  Gets,
+  Set,
+  DataBlock,
 };
