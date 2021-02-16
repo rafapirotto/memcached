@@ -2,8 +2,7 @@ const {
   InvalidCommandError,
   NoOptionsError,
   WrongArgumentNumberError,
-  DataBlockExpectedError,
-  NoDataBlockExpectedError,
+  DataExpectedError,
   WrongByteLengthError,
   BadCommandLineFormatError,
 } = require('./index');
@@ -22,11 +21,10 @@ const handleErrors = (callback, errorCallback) => {
       error instanceof InvalidCommandError
               || error instanceof NoOptionsError
               || error instanceof WrongArgumentNumberError
-              || error instanceof NoDataBlockExpectedError
     ) {
       errorCallback(ERROR_MESSAGE);
     } else if (
-      error instanceof DataBlockExpectedError
+      error instanceof DataExpectedError
               || error instanceof WrongByteLengthError
     ) {
       errorCallback(BAD_DATA_CHUNK);

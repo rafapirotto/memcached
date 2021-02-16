@@ -3,7 +3,7 @@
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 
-const { DataBlockExpectedError, NoDataBlockExpectedError } = require('./domain/errors');
+const { DataExpectedError, NoDataExpectedError } = require('./domain/errors');
 const Parser = require('./parser/Parser');
 const CommandFactory = require('./factory/CommandFactory');
 const { TERMINATOR } = require('./domain/constants');
@@ -31,27 +31,14 @@ const server = net.createServer((socket) => {
       socket.expectedData = null;
       sendResponse(socket, message);
     };
-    const callback = (message) => {
+    const callback = () => {
       const parsedRequest = parser.parse(data);
       const command = commandFactory.create(
         parsedRequest,
         socket.expectedData,
       );
-      let result = null;
-      if (socket.expectedData) {
-        if (command instanceof DataBlock) {
-          result = command.execute(socket.expectedData);
-        } else {
-          throw new DataBlockExpectedError();
-        }
-      // eslint-disable-next-line valid-typeof
-      } else if (typeof command === DataBlock) {
-        throw new NoDataBlockExpectedError();
-      } else {
-        result = command.execute();
-      }
-      if (result.data) socket.expectedData = result.data;
-      else socket.expectedData = null;
+      const result = command.execute();
+      socket.expectedData = result.data;
       sendResponse(socket, result.response);
     };
     handleErrors(callback, errorCallback);

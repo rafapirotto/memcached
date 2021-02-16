@@ -2,16 +2,19 @@
 const {
   WrongByteLengthError,
   BadCommandLineFormatError,
+  DataExpectedError,
 } = require('../errors');
 
 class DataBlock {
-  constructor(data, storage) {
+  constructor(data, storage, expectedData) {
     this.storage = storage;
     this.data = data;
+    this.expectedData = expectedData;
   }
 
-  execute(expectedData) {
-    const [command, key, flags, exptime, bytes, noreply] = expectedData;
+  execute() {
+    if (!this.expectedData) throw new DataExpectedError();
+    const [command, key, flags, exptime, bytes, noreply] = this.expectedData;
     // TODO: remove console.log
     console.log(command);
     let parsedBytes = 0;

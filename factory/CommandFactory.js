@@ -2,7 +2,9 @@
 const {
   Get, Gets, Set, DataBlock,
 } = require('../domain/commands/index');
-const { NoOptionsError, InvalidCommandError } = require('../domain/errors');
+const {
+  NoOptionsError, InvalidCommandError, DataExpectedError,
+} = require('../domain/errors');
 const storage = require('../storage/Storage');
 const { COMMANDS } = require('../domain/constants');
 
@@ -13,6 +15,7 @@ class CommandFactory {
     const command = parsedRequest[0];
     const options = parsedRequest.slice(1);
     if (this.commandExists(command) && options.length === 0) { throw new NoOptionsError(); }
+    if (this.commandExists(command) && expectedData) { throw new DataExpectedError(); }
     if (!this.commandExists(command) && !expectedData) { throw new InvalidCommandError(); }
     switch (command) {
       case COMMANDS.get:
@@ -22,7 +25,7 @@ class CommandFactory {
       case COMMANDS.set:
         return new Set(options);
       default:
-        return new DataBlock(command, storage);
+        return new DataBlock(command, storage, expectedData);
     }
   }
 
