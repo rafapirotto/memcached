@@ -1,10 +1,10 @@
 /* eslint-disable class-methods-use-this */
 const {
   Get, Gets, Set, DataBlock,
-} = require('./commands');
-const { NoOptionsError, InvalidCommandError } = require('./errors');
-const storage = require('./Storage');
-const { COMMANDS } = require('./utils/index');
+} = require('../domain/commands/index');
+const { NoOptionsError, InvalidCommandError } = require('../domain/errors');
+const storage = require('../storage/Storage');
+const { COMMANDS } = require('../domain/constants');
 
 class CommandFactory {
   constructor() {}

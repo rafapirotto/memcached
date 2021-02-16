@@ -3,24 +3,12 @@
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 
-const Parser = require('./Parser');
-const CommandFactory = require('./CommandFactory');
-const {
-  ERROR_MESSAGE,
-  BAD_DATA_CHUNK,
-  BAD_COMMAND_LINE_FORMAT,
-} = require('./utils/messages');
-const {
-  InvalidCommandError,
-  NoOptionsError,
-  WrongArgumentNumberError,
-  DataBlockExpectedError,
-  NoDataBlockExpectedError,
-  WrongByteLengthError,
-  BadCommandLineFormatError,
-} = require('./errors');
-const { TERMINATOR } = require('./utils');
-const { DataBlock } = require('./commands/index');
+const { DataBlockExpectedError, NoDataBlockExpectedError } = require('./domain/errors');
+const Parser = require('./parser/Parser');
+const CommandFactory = require('./factory/CommandFactory');
+const { TERMINATOR } = require('./domain/constants');
+const { DataBlock } = require('./domain/commands');
+const { handleErrors } = require('./domain/errors/Handler');
 
 const parser = new Parser();
 const commandFactory = new CommandFactory();
@@ -39,7 +27,11 @@ const sendResponse = (socket, text) => {
 const server = net.createServer((socket) => {
   server.maxConnections = MAX_CONNECTIONS;
   socket.on('data', (data) => {
-    try {
+    const errorCallback = (message) => {
+      socket.expectedData = null;
+      sendResponse(socket, message);
+    };
+    const callback = (message) => {
       const parsedRequest = parser.parse(data);
       const command = commandFactory.create(
         parsedRequest,
@@ -61,24 +53,8 @@ const server = net.createServer((socket) => {
       if (result.data) socket.expectedData = result.data;
       else socket.expectedData = null;
       sendResponse(socket, result.response);
-    } catch (error) {
-      socket.expectedData = null;
-      if (
-        error instanceof InvalidCommandError
-                || error instanceof NoOptionsError
-                || error instanceof WrongArgumentNumberError
-                || error instanceof NoDataBlockExpectedError
-      ) {
-        sendResponse(socket, ERROR_MESSAGE);
-      } else if (
-        error instanceof DataBlockExpectedError
-                || error instanceof WrongByteLengthError
-      ) {
-        sendResponse(socket, BAD_DATA_CHUNK);
-      } else if (error instanceof BadCommandLineFormatError) {
-        sendResponse(socket, BAD_COMMAND_LINE_FORMAT);
-      }
-    }
+    };
+    handleErrors(callback, errorCallback);
   });
 
   socket.on('close', (data) => {

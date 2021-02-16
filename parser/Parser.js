@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 const { parseArgsStringToArgv } = require('string-argv');
 
-const { TERMINATOR } = require('./utils');
+const { TERMINATOR } = require('../domain/constants');
 
 class Parser {
   constructor() {}

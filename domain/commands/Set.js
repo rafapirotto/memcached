@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { WrongArgumentNumberError } = require('../errors');
-const { COMMANDS } = require('../utils/index');
+const { COMMANDS } = require('../constants/index');
 
 class Set {
   constructor(options) {

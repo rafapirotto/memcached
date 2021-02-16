@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
-const { TERMINATOR } = require('../utils');
+const { TERMINATOR } = require('../constants/index');
 
-class Gets {
+class Get {
   constructor(options, storage) {
     this.options = options;
     this.storage = storage;
@@ -24,10 +24,10 @@ class Gets {
 
   toString(obj) {
     const {
-      key, flags, bytes, value, cas,
+      key, flags, bytes, value,
     } = obj;
-    return `VALUE ${key} ${flags.toString()} ${bytes.toString()} ${cas}${TERMINATOR}${value}${TERMINATOR}`;
+    return `VALUE ${key} ${flags.toString()} ${bytes.toString()}${TERMINATOR}${value}${TERMINATOR}`;
   }
 }
 
-module.exports = Gets;
+module.exports = Get;
