@@ -10,7 +10,8 @@ class Set {
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
       const optionAsInt = parseInt(option, 10);
-      if (Number.isNaN(optionAsInt)) throw new BadCommandLineFormatError();
+      // TODO: validate negative exptime
+      if (Number.isNaN(optionAsInt) || optionAsInt < 0) throw new BadCommandLineFormatError();
       this.options[index] = optionAsInt;
     }
   }

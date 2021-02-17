@@ -9,8 +9,9 @@ const removeNewLine = (stringRequest) => stringRequest.split(TERMINATOR)[0];
 const parse = (bufferRequest) => {
   let stringRequest = bufferToString(bufferRequest);
   stringRequest = removeNewLine(stringRequest);
-  // stringRequest gets transformed to array like ["command","arg1",...,"argN"]
-  const parsedRequest = parseArgsStringToArgv(stringRequest);
+  let parsedRequest = [''];
+  // parseArgsStringToArgv transforms stringRequest to array like ["command","arg1",...,"argN"]
+  if (stringRequest.length !== 0) parsedRequest = parseArgsStringToArgv(stringRequest);
   return parsedRequest;
 };
 module.exports = { parse };
