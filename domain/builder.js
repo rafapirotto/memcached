@@ -1,13 +1,10 @@
 /* eslint-disable no-param-reassign */
-const Parser = require('../parser/Parser');
-const CommandFactory = require('../factory/CommandFactory');
-
-const parser = new Parser();
-const commandFactory = new CommandFactory();
+const { parse } = require('../parser/parser');
+const { create } = require('../factory/commandFactory');
 
 const build = (connection) => {
-  const parsedRequest = parser.parse(connection.data);
-  const command = commandFactory.create(
+  const parsedRequest = parse(connection.data);
+  const command = create(
     parsedRequest,
     connection.getExpectedData(),
   );

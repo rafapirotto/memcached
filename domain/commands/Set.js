@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const { WrongArgumentNumberError } = require('../errors');
 const { COMMANDS, EMPTY_SPACE } = require('../constants/index');
 

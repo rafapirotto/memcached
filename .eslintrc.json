@@ -13,6 +13,7 @@
         "no-useless-constructor":"off",
         "import/no-unresolved": "off",
         "no-empty-function":"off",
-        "no-plusplus":"off"
+        "no-plusplus":"off",
+        "class-methods-use-this":"off"
     }
 }

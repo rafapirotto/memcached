@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const { TERMINATOR, EMPTY_SPACE } = require('../constants/index');
 const { END } = require('../constants/messages');
 
