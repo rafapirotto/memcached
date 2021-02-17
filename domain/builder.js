@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const { parse } = require('../parser/parser');
 const { create } = require('../factory/commandFactory');
 

@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-param-reassign */
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 
