@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
-const { TERMINATOR } = require('../constants/index');
+const { TERMINATOR, EMPTY_SPACE } = require('../constants/index');
+const { END } = require('../constants/messages');
 
 class Get {
   constructor(options, storage) {
@@ -13,12 +14,12 @@ class Get {
   }
 
   getOutput(keys) {
-    let response = '';
+    let response = EMPTY_SPACE;
     keys.forEach((key) => {
       const storageObj = this.storage.find(key);
       if (storageObj) response += this.toString(storageObj);
     });
-    response += 'END';
+    response += END;
     return response;
   }
 

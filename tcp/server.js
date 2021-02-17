@@ -37,7 +37,6 @@ const start = () => {
 
   server.on('connection', (socket) => {
     socket.id = uuidv4();
-    socket.waitingForData = false;
     console.log(
       `Client connected: ${socket.remoteAddress}:${socket.remotePort}`,
     );

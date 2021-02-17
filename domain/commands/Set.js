@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { WrongArgumentNumberError } = require('../errors');
-const { COMMANDS } = require('../constants/index');
+const { COMMANDS, EMPTY_SPACE } = require('../constants/index');
 
 class Set {
   constructor(options) {
@@ -15,7 +15,7 @@ class Set {
   }
 
   getOutput() {
-    return '';
+    return EMPTY_SPACE;
   }
 }
 

@@ -4,6 +4,8 @@ const {
   BadCommandLineFormatError,
   DataExpectedError,
 } = require('../errors');
+const { STORED } = require('../constants/messages');
+const { EMPTY_SPACE, NO_REPLY } = require('../constants/index');
 
 class DataBlock {
   constructor(data, storage, expectedData) {
@@ -35,12 +37,12 @@ class DataBlock {
       exptime,
       bytes,
     });
-    if (noreply === 'noreply') return { response: '' };
+    if (noreply === NO_REPLY) return { response: EMPTY_SPACE };
     return { response: this.getOutput() };
   }
 
   getOutput() {
-    return 'STORED';
+    return STORED;
   }
 }
 
