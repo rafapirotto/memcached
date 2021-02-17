@@ -25,7 +25,8 @@ class DataBlock {
 
   execute() {
     this.validateDataBlock();
-    const response = this.storage.execute(this.expectedData, this.data);
+    const objToExecute = { ...this.expectedData, value: this.data };
+    const response = this.storage.execute(objToExecute);
     return { response };
   }
 }

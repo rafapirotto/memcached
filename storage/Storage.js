@@ -35,36 +35,37 @@ class Storage {
   }
 
   set(
-    expectedData, value,
+    objToExecute,
   ) {
     const {
       key, noreply,
-    } = expectedData;
+    } = objToExecute;
     const { found, index } = this.customFind(key);
-    expectedData.value = value;
-    if (found) this.update(expectedData, index);
-    else this.save(expectedData);
+    if (found) this.update(objToExecute, index);
+    else this.save(objToExecute);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return STORED;
   }
 
   add(
-    expectedData, value,
+    objToExecute,
   ) {
-    const { found } = this.customFind(expectedData.key);
-    expectedData.value = value;
-    if (found) return NOT_STORED;
-    this.save(expectedData);
-    return STORED;
+    const {
+      noreply,
+    } = objToExecute;
+    const { found } = this.customFind(objToExecute.key);
+    if (!found) this.save(objToExecute);
+    if (noreply === NO_REPLY) return EMPTY_SPACE;
+    return found ? STORED : NOT_STORED;
   }
 
-  execute(expectedData, value) {
-    const { command } = expectedData;
+  execute(objToExecute) {
+    const { command } = objToExecute;
     switch (command) {
       case COMMANDS.set:
-        return this.set(expectedData, value);
+        return this.set(objToExecute);
       case COMMANDS.add:
-        return this.add(expectedData, value);
+        return this.add(objToExecute);
       default:
         return null;
     }
