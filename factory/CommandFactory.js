@@ -1,5 +1,5 @@
 const {
-  Get, Gets, Set, DataBlock,
+  Get, Gets, Set, DataBlock, Add,
 } = require('../domain/commands/index');
 const {
   NoOptionsError, InvalidCommandError, DataExpectedError,
@@ -33,6 +33,8 @@ const create = (parsedRequest, expectedData) => {
       return new Gets(options, storage);
     case COMMANDS.set:
       return new Set(options);
+    case COMMANDS.add:
+      return new Add(options);
     default:
       return new DataBlock(command, storage, expectedData);
   }
