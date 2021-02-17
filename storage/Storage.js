@@ -12,9 +12,12 @@ class Storage {
     return this.cas++;
   }
 
-  set({
-    key, value, flags, exptime, bytes,
-  }) {
+  set(
+    expectedData, value,
+  ) {
+    const {
+      key, flags, exptime, bytes,
+    } = expectedData;
     const objIndex = this.storage.findIndex((obj) => obj.key === key);
     const found = objIndex !== -1;
     const objToInsert = {

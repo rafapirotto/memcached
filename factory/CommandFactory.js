@@ -16,12 +16,16 @@ const commandExists = (command) => {
   return exists;
 };
 
+const validateRequestSyntax = (command, options, expectedData) => {
+  if (commandExists(command) && options.length === 0) throw new NoOptionsError();
+  if (commandExists(command) && expectedData) throw new DataExpectedError();
+  if (!commandExists(command) && !expectedData) throw new InvalidCommandError();
+};
+
 const create = (parsedRequest, expectedData) => {
   const command = parsedRequest[0];
   const options = parsedRequest.slice(1);
-  if (commandExists(command) && options.length === 0) { throw new NoOptionsError(); }
-  if (commandExists(command) && expectedData) { throw new DataExpectedError(); }
-  if (!commandExists(command) && !expectedData) { throw new InvalidCommandError(); }
+  validateRequestSyntax(command, options, expectedData);
   switch (command) {
     case COMMANDS.get:
       return new Get(options, storage);
