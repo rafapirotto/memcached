@@ -13,7 +13,7 @@ class Add {
   validateNumberOptions() {
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
-      const optionAsInt = parseInt(option, 10);
+      const optionAsInt = Number(option);
       // TODO: validate negative exptime
       const notValid = Number.isNaN(optionAsInt) || this.isFloat(optionAsInt) || optionAsInt < 0;
       if (notValid) throw new BadCommandLineFormatError();
