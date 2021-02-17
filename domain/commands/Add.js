@@ -6,6 +6,10 @@ class Add {
     this.options = options;
   }
 
+  isFloat(number) {
+    return Number(number) === number && number % 1 !== 0;
+  }
+
   validateNumberOptions() {
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
