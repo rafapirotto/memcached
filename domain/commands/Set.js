@@ -6,12 +6,17 @@ class Set {
     this.options = options;
   }
 
+  isFloat(number) {
+    return Number(number) === number && number % 1 !== 0;
+  }
+
   validateNumberOptions() {
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
-      const optionAsInt = parseInt(option, 10);
+      const optionAsInt = Number(option);
       // TODO: validate negative exptime
-      if (Number.isNaN(optionAsInt) || optionAsInt < 0) throw new BadCommandLineFormatError();
+      const notValid = Number.isNaN(optionAsInt) || this.isFloat(optionAsInt) || optionAsInt < 0;
+      if (notValid) throw new BadCommandLineFormatError();
       this.options[index] = optionAsInt;
     }
   }
