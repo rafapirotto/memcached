@@ -3,7 +3,7 @@ const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 
 const Connection = require('./Connection');
-const { handleErrors } = require('../domain/errors/Handler');
+const { handleErrors } = require('../domain/errors/handleErrors');
 const { build } = require('../domain/Builder');
 
 // TODO: move to .env file

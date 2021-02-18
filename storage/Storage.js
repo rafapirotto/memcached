@@ -59,6 +59,18 @@ class Storage {
     return found ? NOT_STORED : STORED;
   }
 
+  replace(
+    objToExecute,
+  ) {
+    const {
+      noreply,
+    } = objToExecute;
+    const { found, index } = this.customFind(objToExecute.key);
+    if (found) this.update(objToExecute, index);
+    if (noreply === NO_REPLY) return EMPTY_SPACE;
+    return found ? STORED : NOT_STORED;
+  }
+
   execute(objToExecute) {
     const { command } = objToExecute;
     switch (command) {
@@ -66,6 +78,8 @@ class Storage {
         return this.set(objToExecute);
       case COMMANDS.add:
         return this.add(objToExecute);
+      case COMMANDS.replace:
+        return this.replace(objToExecute);
       default:
         return null;
     }

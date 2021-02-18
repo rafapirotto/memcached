@@ -1,5 +1,5 @@
 const {
-  Get, Gets, Set, DataBlock, Add,
+  Get, Gets, Set, DataBlock, Add, Replace,
 } = require('../domain/commands/index');
 const {
   DataExpectedError,
@@ -36,6 +36,8 @@ const create = (parsedRequest, expectedData) => {
       return new Set(options);
     case COMMANDS.add:
       return new Add(options);
+    case COMMANDS.replace:
+      return new Replace(options);
     default:
       return new DataBlock(command, storage, expectedData);
   }
