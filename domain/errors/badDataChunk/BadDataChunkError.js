@@ -1,6 +1,10 @@
+const {
+  BAD_DATA_CHUNK,
+} = require('../../constants/messages');
+
 class BadDataChunkError extends Error {
-  constructor(message) {
-    super(message);
+  constructor() {
+    super(BAD_DATA_CHUNK);
   }
 }
 module.exports = BadDataChunkError;

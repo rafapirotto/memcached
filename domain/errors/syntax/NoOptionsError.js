@@ -1,8 +1,8 @@
 const SyntaxError = require('./SyntaxError');
 
 class NoOptionsError extends SyntaxError {
-  constructor(message) {
-    super(message);
+  constructor() {
+    super();
   }
 }
 module.exports = NoOptionsError;
