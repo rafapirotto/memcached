@@ -1,5 +1,5 @@
-const { EMPTY_SPACE } = require('../constants/index');
-const { END } = require('../constants/messages');
+const { EMPTY_SPACE } = require('../../constants/index');
+const { END } = require('../../constants/messages');
 
 class Retrieval {
   constructor(options, storage) {

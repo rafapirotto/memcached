@@ -1,8 +1,8 @@
 const {
   BadCommandLineFormatError,
-} = require('../errors/badCommandLine');
-const { WrongArgumentNumberError } = require('../errors/syntax');
-const { EMPTY_SPACE } = require('../constants/index');
+} = require('../../errors/badCommandLine');
+const { WrongArgumentNumberError } = require('../../errors/syntax');
+const { EMPTY_SPACE } = require('../../constants/index');
 
 class Storage {
   constructor(options) {

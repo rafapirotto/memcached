@@ -1,4 +1,4 @@
-const { COMMANDS } = require('../constants/index');
+const { COMMANDS } = require('../../constants/index');
 const Storage = require('./Storage');
 
 class Add extends Storage {

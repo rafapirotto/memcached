@@ -1,4 +1,4 @@
-const { TERMINATOR } = require('../constants/index');
+const { TERMINATOR } = require('../../constants/index');
 const Retrieval = require('./Retrieval');
 
 class Gets extends Retrieval {

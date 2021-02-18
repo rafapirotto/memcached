@@ -1,8 +1,8 @@
-const Get = require('./Get');
-const Gets = require('./Gets');
-const Set = require('./Set');
-const DataBlock = require('./DataBlock');
-const Add = require('./Add');
+const Get = require('./Retrieval/Get');
+const Gets = require('./Retrieval/Gets');
+const Set = require('./Storage/Set');
+const Add = require('./Storage/Add');
+const DataBlock = require('./DataBlock/DataBlock');
 
 module.exports = {
   Get,
