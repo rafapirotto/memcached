@@ -1,25 +1,13 @@
-const { TERMINATOR, EMPTY_SPACE } = require('../constants/index');
-const { END } = require('../constants/messages');
+const { TERMINATOR } = require('../constants/index');
+const Retrieval = require('./Retrieval');
 
-class Get {
+class Get extends Retrieval {
   constructor(options, storage) {
-    this.options = options;
-    this.storage = storage;
+    super(options, storage);
   }
 
   execute() {
-    const keys = this.options;
-    return { response: this.getOutput(keys) };
-  }
-
-  getOutput(keys) {
-    let response = EMPTY_SPACE;
-    keys.forEach((key) => {
-      const storageObj = this.storage.find(key);
-      if (storageObj) response += this.toString(storageObj);
-    });
-    response += END;
-    return response;
+    return super.execute();
   }
 
   toString(obj) {
@@ -27,6 +15,10 @@ class Get {
       key, flags, bytes, value,
     } = obj;
     return `VALUE ${key} ${flags.toString()} ${bytes.toString()}${TERMINATOR}${value}${TERMINATOR}`;
+  }
+
+  getOutput(keys) {
+    return super.getOutput(keys, this.toString);
   }
 }
 
