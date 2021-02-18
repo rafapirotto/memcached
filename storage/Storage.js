@@ -56,7 +56,7 @@ class Storage {
     const { found } = this.customFind(objToExecute.key);
     if (!found) this.save(objToExecute);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
-    return found ? STORED : NOT_STORED;
+    return found ? NOT_STORED : STORED;
   }
 
   execute(objToExecute) {
