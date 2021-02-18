@@ -1,35 +1,33 @@
 const {
-  InvalidCommandError,
-  NoOptionsError,
-  WrongArgumentNumberError,
-  DataExpectedError,
-  WrongByteLengthError,
-  BadCommandLineFormatError,
+  BadCommandLineError,
+  BadDataChunkError,
+  SyntaxError,
 } = require('./index');
 
 const {
   ERROR_MESSAGE,
   BAD_DATA_CHUNK,
   BAD_COMMAND_LINE_FORMAT,
+  SERVER_ERROR,
 } = require('../constants/messages');
 
 const handleErrors = (callback, errorCallback) => {
   try {
     callback();
   } catch (error) {
-    if (
-      error instanceof InvalidCommandError
-              || error instanceof NoOptionsError
-              || error instanceof WrongArgumentNumberError
-    ) {
-      errorCallback(ERROR_MESSAGE);
-    } else if (
-      error instanceof DataExpectedError
-              || error instanceof WrongByteLengthError
-    ) {
-      errorCallback(BAD_DATA_CHUNK);
-    } else if (error instanceof BadCommandLineFormatError) {
-      errorCallback(BAD_COMMAND_LINE_FORMAT);
+    switch (true) {
+      case error instanceof SyntaxError:
+        errorCallback(ERROR_MESSAGE);
+        break;
+      case error instanceof BadDataChunkError:
+        errorCallback(BAD_DATA_CHUNK);
+        break;
+      case error instanceof BadCommandLineError:
+        errorCallback(BAD_COMMAND_LINE_FORMAT);
+        break;
+      default:
+        errorCallback(SERVER_ERROR);
+        break;
     }
   }
 };

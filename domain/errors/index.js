@@ -1,15 +1,9 @@
-const InvalidCommandError = require('./InvalidCommandError');
-const NoOptionsError = require('./NoOptionsError');
-const WrongArgumentNumberError = require('./WrongArgumentNumberError');
-const DataExpectedError = require('./DataExpectedError');
-const WrongByteLengthError = require('./WrongByteLengthError');
-const BadCommandLineFormatError = require('./BadCommandLineFormatError');
+const BadCommandLineError = require('./badCommandLine/BadCommandLineError');
+const BadDataChunkError = require('./badDataChunk/BadDataChunkError');
+const SyntaxError = require('./syntax/SyntaxError');
 
 module.exports = {
-  InvalidCommandError,
-  NoOptionsError,
-  WrongArgumentNumberError,
-  DataExpectedError,
-  WrongByteLengthError,
-  BadCommandLineFormatError,
+  BadCommandLineError,
+  BadDataChunkError,
+  SyntaxError,
 };

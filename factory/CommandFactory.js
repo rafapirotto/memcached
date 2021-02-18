@@ -2,8 +2,9 @@ const {
   Get, Gets, Set, DataBlock, Add,
 } = require('../domain/commands/index');
 const {
-  NoOptionsError, InvalidCommandError, DataExpectedError,
-} = require('../domain/errors');
+  DataExpectedError,
+} = require('../domain/errors/badDataChunk');
+const { NoOptionsError, InvalidCommandError } = require('../domain/errors/syntax');
 const storage = require('../storage/Storage');
 const { COMMANDS } = require('../domain/constants');
 

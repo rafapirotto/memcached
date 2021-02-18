@@ -1,7 +1,6 @@
 const {
-  WrongByteLengthError,
-  DataExpectedError,
-} = require('../errors');
+  DataExpectedError, WrongByteLengthError,
+} = require('../errors/badDataChunk');
 
 class DataBlock {
   constructor(data, storage, expectedData) {
