@@ -5,12 +5,17 @@ const { WrongArgumentNumberError } = require('../../errors/syntax');
 const { EMPTY_SPACE } = require('../../constants/index');
 
 class Storage {
-  constructor(options) {
+  constructor(options, storage) {
     this.options = options;
+    this.storage = storage;
   }
 
   isFloat(number) {
     return Number(number) === number && number % 1 !== 0;
+  }
+
+  getStorage() {
+    return this.storage;
   }
 
   validateNumberOptions() {
@@ -28,11 +33,11 @@ class Storage {
     return EMPTY_SPACE;
   }
 
-  execute(command) {
+  execute(commandInstance) {
     const options = this.options.length;
     if (options > 5 || options < 4) throw new WrongArgumentNumberError();
     this.validateNumberOptions();
-    this.options.splice(0, 0, command);
+    this.options.splice(0, 0, commandInstance);
     return { response: this.getOutput(), data: this.options };
   }
 }

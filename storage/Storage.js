@@ -1,6 +1,3 @@
-const { STORED, NOT_STORED } = require('../domain/constants/messages');
-const { EMPTY_SPACE, NO_REPLY, COMMANDS } = require('../domain/constants/index');
-
 class Storage {
   constructor() {
     this.storage = [];
@@ -32,57 +29,6 @@ class Storage {
   update(obj, objIndex) {
     obj.cas = this.storage[objIndex].cas;
     this.storage[objIndex] = obj;
-  }
-
-  set(
-    objToExecute,
-  ) {
-    const {
-      key, noreply,
-    } = objToExecute;
-    const { found, index } = this.customFind(key);
-    if (found) this.update(objToExecute, index);
-    else this.save(objToExecute);
-    if (noreply === NO_REPLY) return EMPTY_SPACE;
-    return STORED;
-  }
-
-  add(
-    objToExecute,
-  ) {
-    const {
-      noreply,
-    } = objToExecute;
-    const { found } = this.customFind(objToExecute.key);
-    if (!found) this.save(objToExecute);
-    if (noreply === NO_REPLY) return EMPTY_SPACE;
-    return found ? NOT_STORED : STORED;
-  }
-
-  replace(
-    objToExecute,
-  ) {
-    const {
-      noreply,
-    } = objToExecute;
-    const { found, index } = this.customFind(objToExecute.key);
-    if (found) this.update(objToExecute, index);
-    if (noreply === NO_REPLY) return EMPTY_SPACE;
-    return found ? STORED : NOT_STORED;
-  }
-
-  execute(objToExecute) {
-    const { command } = objToExecute;
-    switch (command) {
-      case COMMANDS.set:
-        return this.set(objToExecute);
-      case COMMANDS.add:
-        return this.add(objToExecute);
-      case COMMANDS.replace:
-        return this.replace(objToExecute);
-      default:
-        return null;
-    }
   }
 }
 

@@ -33,11 +33,11 @@ const create = (parsedRequest, expectedData) => {
     case COMMANDS.gets:
       return new Gets(options, storage);
     case COMMANDS.set:
-      return new Set(options);
+      return new Set(options, storage);
     case COMMANDS.add:
-      return new Add(options);
+      return new Add(options, storage);
     case COMMANDS.replace:
-      return new Replace(options);
+      return new Replace(options, storage);
     default:
       return new DataBlock(command, storage, expectedData);
   }

@@ -16,16 +16,17 @@ class DataBlock {
   }
 
   convertDataToObject(expectedData) {
-    const [command, key, flags, exptime, bytes, noreply] = expectedData;
+    const [commandInstance, key, flags, exptime, bytes, noreply] = expectedData;
     return {
-      command, key, flags, exptime, bytes, noreply,
+      commandInstance, key, flags, exptime, bytes, noreply,
     };
   }
 
   execute() {
     this.validateDataBlock();
     const objToExecute = { ...this.expectedData, value: this.data };
-    const response = this.storage.execute(objToExecute);
+    // TODO: fix
+    const response = objToExecute.commandInstance.doStorageOperation(objToExecute);
     return { response };
   }
 }
