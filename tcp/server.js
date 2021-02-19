@@ -2,6 +2,7 @@
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
 
+const storage = require('../storage/Storage');
 const Connection = require('./Connection');
 const { handleErrors } = require('../domain/errors/handleErrors');
 const { build } = require('../domain/Builder');
@@ -20,7 +21,7 @@ const start = () => {
         socket.expectedData = null;
         connection.sendResponse(message);
       };
-      handleErrors(() => { build(connection); }, errorCallback);
+      handleErrors(() => { build(connection, storage); }, errorCallback);
     });
 
     socket.on('close', (data) => {

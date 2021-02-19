@@ -5,7 +5,7 @@ const {
   DataExpectedError,
 } = require('../domain/errors/badDataChunk');
 const { NoOptionsError, InvalidCommandError } = require('../domain/errors/syntax');
-const storage = require('../storage/Storage');
+
 const { COMMANDS } = require('../domain/constants');
 
 const commandExists = (command) => {
@@ -23,7 +23,7 @@ const validateRequestSyntax = (command, options, expectedData) => {
   if (!commandExists(command) && !expectedData) throw new InvalidCommandError();
 };
 
-const create = (parsedRequest, expectedData) => {
+const create = (parsedRequest, expectedData, storage) => {
   const command = parsedRequest[0];
   const options = parsedRequest.slice(1);
   validateRequestSyntax(command, options, expectedData);

@@ -1,5 +1,9 @@
 class Storage {
   constructor() {
+    this.initialize();
+  }
+
+  initialize() {
     this.storage = [];
     this.cas = 0;
   }

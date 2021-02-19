@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Check dependencies
+    name: Run tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,6 +22,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - run: npm test
 
   run-linters:
     name: Run linters
