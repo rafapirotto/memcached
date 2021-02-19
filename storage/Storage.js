@@ -22,6 +22,7 @@ class Storage {
   }
 
   save(obj) {
+    delete obj.commandInstance;
     obj.cas = this.nextCas();
     this.storage.push(obj);
   }
