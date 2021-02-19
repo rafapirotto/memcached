@@ -2,7 +2,7 @@ const Storage = require('./Storage');
 const { STORED, NOT_STORED } = require('../../constants/messages');
 const { EMPTY_SPACE, NO_REPLY } = require('../../constants/index');
 
-class Replace extends Storage {
+class Append extends Storage {
   constructor(options, storage) {
     super(options, storage);
   }
@@ -15,11 +15,15 @@ class Replace extends Storage {
     const {
       noreply,
     } = objToExecute;
-    const { found } = super.getStorage().customFind(objToExecute.key);
-    if (found) super.getStorage().update(objToExecute);
+    const obj = super.getStorage().find(objToExecute.key);
+    if (obj) {
+      obj.bytes += objToExecute.bytes;
+      obj.value += objToExecute.value;
+      super.getStorage().update(obj);
+    }
     if (noreply === NO_REPLY) return EMPTY_SPACE;
-    return found ? STORED : NOT_STORED;
+    return obj ? STORED : NOT_STORED;
   }
 }
 
-module.exports = Replace;
+module.exports = Append;

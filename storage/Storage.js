@@ -27,9 +27,10 @@ class Storage {
     this.storage.push(obj);
   }
 
-  update(obj, objIndex) {
-    obj.cas = this.storage[objIndex].cas;
-    this.storage[objIndex] = obj;
+  update(obj) {
+    const { index } = this.customFind(obj.key);
+    obj.cas = this.storage[index].cas;
+    this.storage[index] = obj;
   }
 }
 
