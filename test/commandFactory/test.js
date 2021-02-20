@@ -1,8 +1,6 @@
 const { assert } = require('chai');
 
-const { parse } = require('../../parser/parser');
 const { create } = require('../../factory/commandFactory');
-const { TERMINATOR } = require('../../domain/constants/index');
 const {
   Set, Add, Replace, Append, Prepend, Get, Gets, DataBlock,
 } = require('../../domain/commands');
@@ -20,11 +18,7 @@ const exptime = '3600';
 const bytes = '2';
 const noreply = 'noreply';
 
-const stringToBuffer = (stringRequest) => Buffer.from(stringRequest + TERMINATOR, 'utf8');
-
-const getDataBlockCommandInstance = (dataString, expectedData) => {
-  const data = stringToBuffer(dataString);
-  const parsedRequest = parse(data);
+const getDataBlockCommandInstance = (parsedRequest, expectedData) => {
   const command = create(
     parsedRequest,
     expectedData,
@@ -34,9 +28,7 @@ const getDataBlockCommandInstance = (dataString, expectedData) => {
 };
 
 const getStorageCommandInstance = (command, expectedData, request = null) => {
-  const dataString = !request ? `${command} ${key} ${flags} ${exptime} ${bytes} ${noreply}` : request;
-  const data = stringToBuffer(dataString);
-  const parsedRequest = parse(data);
+  const parsedRequest = !request ? [command, key, flags, exptime, bytes, noreply] : request;
   const commandToReturn = create(
     parsedRequest,
     expectedData,
@@ -46,9 +38,7 @@ const getStorageCommandInstance = (command, expectedData, request = null) => {
 };
 
 const getRetrievalCommandInstance = (command, expectedData, request = null) => {
-  const dataString = !request ? `${command} ${key}` : request;
-  const data = stringToBuffer(dataString);
-  const parsedRequest = parse(data);
+  const parsedRequest = !request ? [command, key] : request;
   const commandToReturn = create(
     parsedRequest,
     expectedData,
@@ -126,7 +116,7 @@ describe('commandFactory', () => {
         describe('DataBlock', () => {
           it('should throw a instance of InvalidCommandError', () => {
             try {
-              getDataBlockCommandInstance('datablock', null);
+              getDataBlockCommandInstance(['datablock'], null);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof InvalidCommandError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -228,7 +218,7 @@ describe('commandFactory', () => {
       describe('data block', () => {
         it('should return an instance of the DataBlock command', () => {
           const expectedData = getExpectedData();
-          const command = getDataBlockCommandInstance('datablock', expectedData);
+          const command = getDataBlockCommandInstance(['datablock'], expectedData);
           const actual = command instanceof DataBlock;
           const expected = true;
           assert.strictEqual(actual, expected);
@@ -241,7 +231,7 @@ describe('commandFactory', () => {
       describe('Set', () => {
         it('should throw a instance of NoOptionsError', () => {
           try {
-            getStorageCommandInstance('set', null, 'set');
+            getStorageCommandInstance('set', null, ['set']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -252,7 +242,7 @@ describe('commandFactory', () => {
       describe('Add', () => {
         it('should throw a instance of NoOptionsError', () => {
           try {
-            getStorageCommandInstance('add', null, 'add');
+            getStorageCommandInstance('add', null, ['add']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -263,7 +253,7 @@ describe('commandFactory', () => {
       describe('Replace', () => {
         it('should throw a instance of NoOptionsError', () => {
           try {
-            getStorageCommandInstance('replace', null, 'replace');
+            getStorageCommandInstance('replace', null, ['replace']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -274,7 +264,7 @@ describe('commandFactory', () => {
       describe('Append', () => {
         it('should throw a instance of NoOptionsError', () => {
           try {
-            getStorageCommandInstance('append', null, 'append');
+            getStorageCommandInstance('append', null, ['append']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -285,7 +275,7 @@ describe('commandFactory', () => {
       describe('Prepend', () => {
         it('should throw a instance of NoOptionsError', () => {
           try {
-            getStorageCommandInstance('prepend', null, 'prepend');
+            getStorageCommandInstance('prepend', null, ['prepend']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -298,7 +288,7 @@ describe('commandFactory', () => {
       describe('Get', () => {
         it('should throw a instance of NoOptionsError', () => {
           try {
-            getRetrievalCommandInstance('get', null, 'get');
+            getRetrievalCommandInstance('get', null, ['get']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -308,7 +298,7 @@ describe('commandFactory', () => {
         describe('Gets', () => {
           it('should throw a instance of NoOptionsError', () => {
             try {
-              getRetrievalCommandInstance('gets', null, 'gets');
+              getRetrievalCommandInstance('gets', null, ['gets']);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
