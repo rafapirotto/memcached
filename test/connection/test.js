@@ -28,7 +28,7 @@ beforeEach(() => {
   storage.save(testObj);
 });
 
-describe('builder', () => {
+describe('connection', () => {
   describe('setExpectedData()', () => {
     describe('with expectedData', () => {
       const socket = new DummySocket();

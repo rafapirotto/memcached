@@ -5,14 +5,15 @@ const { TERMINATOR, EMPTY_SPACE } = require('../../domain/constants/index');
 
 const stringToBuffer = (stringRequest) => Buffer.from(stringRequest + TERMINATOR, 'utf8');
 
+const key = 'new_key';
+const flags = '0';
+const exptime = '3600';
+const bytes = '2';
+const noreply = 'noreply';
+
 describe('parser', () => {
   describe('parse()', () => {
     describe('non empty string', () => {
-      const key = 'new_key';
-      const flags = '0';
-      const exptime = '3600';
-      const bytes = '2';
-      const noreply = 'noreply';
       const dataString = `set ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
       const expectedArray = ['set', key, flags, exptime, bytes, noreply];
       const data = stringToBuffer(dataString);
