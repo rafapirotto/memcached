@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { assert } = require('chai');
 
 const { parse } = require('../../parser/parser');
 const { TERMINATOR, EMPTY_SPACE } = require('../../domain/constants/index');

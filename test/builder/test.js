@@ -1,18 +1,13 @@
-const assert = require('assert');
+const { assert } = require('chai');
 
 const storage = require('../../storage/Storage');
 const { build } = require('../../domain/builder');
 const Connection = require('../../tcp/Connection');
 const { TERMINATOR, EMPTY_SPACE } = require('../../domain/constants/index');
 const { Set } = require('../../domain/commands');
+const DummySocket = require('../DummySocket/DummySocket');
 
 const stringToBuffer = (stringRequest) => Buffer.from(stringRequest + TERMINATOR, 'utf8');
-
-class DummySocket {
-  write(text) {
-    this.text = text;
-  }
-}
 
 const testObj = {
   key: 'existing_key_1',
@@ -100,7 +95,7 @@ describe('builder', () => {
 
   describe('sendResponse()', () => {
     describe('nonempty response', () => {
-      it('should return a nonempty response', () => {
+      it('should return the corresponding nonempty response', () => {
         const socket = new DummySocket();
         const data = stringToBuffer('get non_existent_key');
         const connection = new Connection(socket, data);
