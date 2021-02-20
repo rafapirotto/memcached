@@ -8,7 +8,7 @@ const { NoOptionsError, InvalidCommandError } = require('../domain/errors/syntax
 
 const { COMMANDS } = require('../domain/constants');
 
-const commandExists = (command) => {
+const isCommand = (command) => {
   let exists = false;
   Object.entries(COMMANDS).forEach((elem) => {
     const value = elem[1];
@@ -18,9 +18,9 @@ const commandExists = (command) => {
 };
 
 const validateRequestSyntax = (command, options, expectedData) => {
-  if (commandExists(command) && options.length === 0) throw new NoOptionsError();
-  if (commandExists(command) && expectedData) throw new DataExpectedError();
-  if (!commandExists(command) && !expectedData) throw new InvalidCommandError();
+  if (isCommand(command) && options.length === 0) throw new NoOptionsError();
+  if (isCommand(command) && expectedData) throw new DataExpectedError();
+  if (!isCommand(command) && !expectedData) throw new InvalidCommandError();
 };
 
 const create = (parsedRequest, expectedData, storage) => {
