@@ -6,8 +6,6 @@ const { TERMINATOR } = require('../../domain/constants/index');
 const {
   Set, Add, Replace, Append, Prepend, Get, Gets, DataBlock,
 } = require('../../domain/commands');
-const DummySocket = require('../DummySocket/DummySocket');
-const Connection = require('../../tcp/Connection');
 const storage = require('../../storage/Storage');
 const { NoOptionsError, InvalidCommandError } = require('../../domain/errors/syntax');
 const { DataExpectedError } = require('../../domain/errors/badDataChunk');
@@ -24,45 +22,50 @@ const noreply = 'noreply';
 
 const stringToBuffer = (stringRequest) => Buffer.from(stringRequest + TERMINATOR, 'utf8');
 
-const getInstanceOfSetCommand = () => {
-  const setDataString = `set ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
-  const setData = stringToBuffer(setDataString);
-  const setDataSocket = new DummySocket();
-  const setConnection = new Connection(setDataSocket, setData);
-  const setParsedRequest = parse(setData);
-  const setCommand = create(
-    setParsedRequest,
-    setConnection.getExpectedData(),
-    storage,
-  );
-  return setCommand;
-};
-const getCommand = (dataString, expectedData) => {
+const getDataBlockCommandInstance = (dataString, expectedData) => {
   const data = stringToBuffer(dataString);
   const parsedRequest = parse(data);
-  create(
+  const command = create(
     parsedRequest,
     expectedData,
     storage,
   );
+  return command;
 };
+
+const getStorageCommandInstance = (command, expectedData, request = null) => {
+  const dataString = !request ? `${command} ${key} ${flags} ${exptime} ${bytes} ${noreply}` : request;
+  const data = stringToBuffer(dataString);
+  const parsedRequest = parse(data);
+  const commandToReturn = create(
+    parsedRequest,
+    expectedData,
+    storage,
+  );
+  return commandToReturn;
+};
+
+const getRetrievalCommandInstance = (command, expectedData, request = null) => {
+  const dataString = !request ? `${command} ${key}` : request;
+  const data = stringToBuffer(dataString);
+  const parsedRequest = parse(data);
+  const commandToReturn = create(
+    parsedRequest,
+    expectedData,
+    storage,
+  );
+  return commandToReturn;
+};
+
+const getExpectedData = () => [getStorageCommandInstance('set', null), key, flags, exptime, bytes, noreply];
 
 describe('commandFactory', () => {
   describe('create()', () => {
-    describe('existent commands with correct syntax', () => {
-      describe('storage', () => {
+    describe('when not expecting data', () => {
+      describe('storage commands', () => {
         describe('Set', () => {
           it('should return an instance of the Set command', () => {
-            const dataString = `set ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getStorageCommandInstance('set', null);
             const actual = command instanceof Set;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -70,16 +73,7 @@ describe('commandFactory', () => {
         });
         describe('Add', () => {
           it('should return an instance of the Add command', () => {
-            const dataString = `add ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getStorageCommandInstance('add', null);
             const actual = command instanceof Add;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -87,16 +81,7 @@ describe('commandFactory', () => {
         });
         describe('Replace', () => {
           it('should return an instance of the Replace command', () => {
-            const dataString = `replace ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getStorageCommandInstance('replace', null);
             const actual = command instanceof Replace;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -104,16 +89,7 @@ describe('commandFactory', () => {
         });
         describe('Append', () => {
           it('should return an instance of the Append command', () => {
-            const dataString = `append ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getStorageCommandInstance('append', null);
             const actual = command instanceof Append;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -121,35 +97,17 @@ describe('commandFactory', () => {
         });
         describe('Prepend', () => {
           it('should return an instance of the Prepend command', () => {
-            const dataString = `prepend ${key} ${flags} ${exptime} ${bytes} ${noreply}`;
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getStorageCommandInstance('prepend', null);
             const actual = command instanceof Prepend;
             const expected = true;
             assert.strictEqual(actual, expected);
           });
         });
       });
-      describe('retrieval', () => {
+      describe('retrieval commands', () => {
         describe('Get', () => {
           it('should return an instance of the Get command', () => {
-            const dataString = 'get key';
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getRetrievalCommandInstance('get', null);
             const actual = command instanceof Get;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -157,40 +115,83 @@ describe('commandFactory', () => {
         });
         describe('Gets', () => {
           it('should return an instance of the Gets command', () => {
-            const dataString = 'gets key';
-            const data = stringToBuffer(dataString);
-            const socket = new DummySocket();
-            const connection = new Connection(socket, data);
-            const parsedRequest = parse(data);
-            const command = create(
-              parsedRequest,
-              connection.getExpectedData(),
-              storage,
-            );
+            const command = getRetrievalCommandInstance('gets', null);
             const actual = command instanceof Gets;
             const expected = true;
             assert.strictEqual(actual, expected);
           });
         });
       });
+      describe('data', () => {
+        describe('DataBlock', () => {
+          it('should throw a instance of InvalidCommandError', () => {
+            try {
+              getDataBlockCommandInstance('datablock', null);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof InvalidCommandError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+      });
     });
-    describe('existent commands with incorrect syntax', () => {
-      describe('without options', () => {
-        it('should throw a instance of NoOptionsError', () => {
+  });
+  describe('when expecting data', () => {
+    describe('storage commands', () => {
+      describe('Set', () => {
+        it('should throw a instance of DataExpectedError', () => {
           try {
-            getCommand('set', null);
+            const expectedData = getExpectedData();
+            getStorageCommandInstance('set', expectedData);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
             else assert.fail(WRONG_EXCEPTION_THROWN);
           }
         });
       });
-      describe('when expecting data', () => {
+      describe('Add', () => {
         it('should throw a instance of DataExpectedError', () => {
           try {
-            const expectedData = [getInstanceOfSetCommand(), key, flags, exptime, bytes, noreply];
-            getCommand(`set ${key} ${flags} ${exptime} ${bytes} ${noreply}`, expectedData);
+            const expectedData = getExpectedData();
+            getStorageCommandInstance('add', expectedData);
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Replace', () => {
+        it('should throw a instance of DataExpectedError', () => {
+          try {
+            const expectedData = getExpectedData();
+            getStorageCommandInstance('replace', expectedData);
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Append', () => {
+        it('should throw a instance of DataExpectedError', () => {
+          try {
+            const expectedData = getExpectedData();
+            getStorageCommandInstance('append', expectedData);
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Prepend', () => {
+        it('should throw a instance of DataExpectedError', () => {
+          try {
+            const expectedData = getExpectedData();
+            getStorageCommandInstance('prepend', expectedData);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
           } catch (e) {
             if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -199,31 +200,122 @@ describe('commandFactory', () => {
         });
       });
     });
-    describe('inexistent commands with correct syntax', () => {
-      it('should return an instance of the DataBlock command', () => {
-        const dataString = 'value';
-        const data = stringToBuffer(dataString);
-        const parsedRequest = parse(data);
-        const expectedData = [getInstanceOfSetCommand(), key, flags, exptime, bytes, noreply];
-        const command = create(
-          parsedRequest,
-          expectedData,
-          storage,
-        );
-        const actual = command instanceof DataBlock;
-        const expected = true;
-        assert.strictEqual(actual, expected);
+    describe('retrieval commands', () => {
+      describe('Get', () => {
+        it('should throw a instance of DataExpectedError', () => {
+          try {
+            const expectedData = getExpectedData();
+            getRetrievalCommandInstance('get', expectedData);
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+        describe('Gets', () => {
+          it('should throw a instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getRetrievalCommandInstance('gets', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+      });
+      describe('data block', () => {
+        it('should return an instance of the DataBlock command', () => {
+          const expectedData = getExpectedData();
+          const command = getDataBlockCommandInstance('datablock', expectedData);
+          const actual = command instanceof DataBlock;
+          const expected = true;
+          assert.strictEqual(actual, expected);
+        });
       });
     });
-    describe('inexistent commands with incorrect syntax', () => {
-      it('should throw a instance of InvalidCommandError', () => {
-        try {
-          getCommand('non_existent_command', null);
-          assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-        } catch (e) {
-          if (e instanceof InvalidCommandError) assert.strictEqual(e.message, ERROR_MESSAGE);
-          else assert.fail(WRONG_EXCEPTION_THROWN);
-        }
+  });
+  describe('when no arguments are provided with the command', () => {
+    describe('storage commands', () => {
+      describe('Set', () => {
+        it('should throw a instance of NoOptionsError', () => {
+          try {
+            getStorageCommandInstance('set', null, 'set');
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Add', () => {
+        it('should throw a instance of NoOptionsError', () => {
+          try {
+            getStorageCommandInstance('add', null, 'add');
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Replace', () => {
+        it('should throw a instance of NoOptionsError', () => {
+          try {
+            getStorageCommandInstance('replace', null, 'replace');
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Append', () => {
+        it('should throw a instance of NoOptionsError', () => {
+          try {
+            getStorageCommandInstance('append', null, 'append');
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('Prepend', () => {
+        it('should throw a instance of NoOptionsError', () => {
+          try {
+            getStorageCommandInstance('prepend', null, 'prepend');
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+    });
+    describe('retrieval commands', () => {
+      describe('Get', () => {
+        it('should throw a instance of NoOptionsError', () => {
+          try {
+            getRetrievalCommandInstance('get', null, 'get');
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+            else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+        describe('Gets', () => {
+          it('should throw a instance of NoOptionsError', () => {
+            try {
+              getRetrievalCommandInstance('gets', null, 'gets');
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
       });
     });
   });
