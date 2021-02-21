@@ -10,8 +10,8 @@ class Storage {
     this.storage = storage;
   }
 
-  isFloat(number) {
-    return Number(number) === number && number % 1 !== 0;
+  isFloat(numberAsString) {
+    return numberAsString.indexOf('.') !== -1;
   }
 
   getStorage() {
@@ -19,11 +19,14 @@ class Storage {
   }
 
   validateNumberOptions() {
+    const exptimeIndex = 2;
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
       const optionAsInt = Number(option);
       // TODO: validate negative exptime
-      const notValid = Number.isNaN(optionAsInt) || this.isFloat(optionAsInt) || optionAsInt < 0;
+      const notValid = Number.isNaN(optionAsInt)
+      || this.isFloat(option)
+      || (optionAsInt < 0 && exptimeIndex !== index);
       if (notValid) throw new BadCommandLineFormatError();
       this.options[index] = optionAsInt;
     }

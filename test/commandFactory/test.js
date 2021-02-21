@@ -114,7 +114,7 @@ describe('commandFactory', () => {
       });
       describe('data', () => {
         describe('DataBlock', () => {
-          it('should throw a instance of InvalidCommandError', () => {
+          it('should throw an instance of InvalidCommandError', () => {
             try {
               getDataBlockCommandInstance(['datablock'], null);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -130,7 +130,7 @@ describe('commandFactory', () => {
   describe('when expecting data', () => {
     describe('storage commands', () => {
       describe('Set', () => {
-        it('should throw a instance of DataExpectedError', () => {
+        it('should throw an instance of DataExpectedError', () => {
           try {
             const expectedData = getExpectedData();
             getStorageCommandInstance('set', expectedData);
@@ -142,7 +142,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Add', () => {
-        it('should throw a instance of DataExpectedError', () => {
+        it('should throw an instance of DataExpectedError', () => {
           try {
             const expectedData = getExpectedData();
             getStorageCommandInstance('add', expectedData);
@@ -154,7 +154,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Replace', () => {
-        it('should throw a instance of DataExpectedError', () => {
+        it('should throw an instance of DataExpectedError', () => {
           try {
             const expectedData = getExpectedData();
             getStorageCommandInstance('replace', expectedData);
@@ -166,7 +166,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Append', () => {
-        it('should throw a instance of DataExpectedError', () => {
+        it('should throw an instance of DataExpectedError', () => {
           try {
             const expectedData = getExpectedData();
             getStorageCommandInstance('append', expectedData);
@@ -178,7 +178,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Prepend', () => {
-        it('should throw a instance of DataExpectedError', () => {
+        it('should throw an instance of DataExpectedError', () => {
           try {
             const expectedData = getExpectedData();
             getStorageCommandInstance('prepend', expectedData);
@@ -192,7 +192,7 @@ describe('commandFactory', () => {
     });
     describe('retrieval commands', () => {
       describe('Get', () => {
-        it('should throw a instance of DataExpectedError', () => {
+        it('should throw an instance of DataExpectedError', () => {
           try {
             const expectedData = getExpectedData();
             getRetrievalCommandInstance('get', expectedData);
@@ -203,7 +203,7 @@ describe('commandFactory', () => {
           }
         });
         describe('Gets', () => {
-          it('should throw a instance of DataExpectedError', () => {
+          it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
               getRetrievalCommandInstance('gets', expectedData);
@@ -229,7 +229,7 @@ describe('commandFactory', () => {
   describe('when no arguments are provided with the command', () => {
     describe('storage commands', () => {
       describe('Set', () => {
-        it('should throw a instance of NoOptionsError', () => {
+        it('should throw an instance of NoOptionsError', () => {
           try {
             getStorageCommandInstance('set', null, ['set']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -240,7 +240,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Add', () => {
-        it('should throw a instance of NoOptionsError', () => {
+        it('should throw an instance of NoOptionsError', () => {
           try {
             getStorageCommandInstance('add', null, ['add']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -251,7 +251,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Replace', () => {
-        it('should throw a instance of NoOptionsError', () => {
+        it('should throw an instance of NoOptionsError', () => {
           try {
             getStorageCommandInstance('replace', null, ['replace']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -262,7 +262,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Append', () => {
-        it('should throw a instance of NoOptionsError', () => {
+        it('should throw an instance of NoOptionsError', () => {
           try {
             getStorageCommandInstance('append', null, ['append']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -273,7 +273,7 @@ describe('commandFactory', () => {
         });
       });
       describe('Prepend', () => {
-        it('should throw a instance of NoOptionsError', () => {
+        it('should throw an instance of NoOptionsError', () => {
           try {
             getStorageCommandInstance('prepend', null, ['prepend']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -286,7 +286,7 @@ describe('commandFactory', () => {
     });
     describe('retrieval commands', () => {
       describe('Get', () => {
-        it('should throw a instance of NoOptionsError', () => {
+        it('should throw an instance of NoOptionsError', () => {
           try {
             getRetrievalCommandInstance('get', null, ['get']);
             assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
@@ -296,7 +296,7 @@ describe('commandFactory', () => {
           }
         });
         describe('Gets', () => {
-          it('should throw a instance of NoOptionsError', () => {
+          it('should throw an instance of NoOptionsError', () => {
             try {
               getRetrievalCommandInstance('gets', null, ['gets']);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);

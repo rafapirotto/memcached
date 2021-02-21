@@ -28,7 +28,7 @@ class Storage {
   save(obj) {
     delete obj.commandInstance;
     obj.cas = this.nextCas();
-    this.storage.push(obj);
+    if (obj.exptime >= 0) this.storage.push(obj);
   }
 
   update(obj) {
