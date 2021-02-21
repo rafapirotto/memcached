@@ -9,24 +9,10 @@ const DummySocket = require('../utils/DummySocket/DummySocket');
 
 const stringToBuffer = (stringRequest) => Buffer.from(stringRequest + TERMINATOR, 'utf8');
 
-const testObj = {
-  key: 'existing_key_1',
-  flags: 0,
-  exptime: 0,
-  bytes: 2,
-  noreply: undefined,
-  value: '22',
-};
-
 const key = 'new_key';
 const flags = 0;
 const exptime = 3600;
 const bytes = 2;
-
-beforeEach(() => {
-  storage.initialize();
-  storage.save(testObj);
-});
 
 describe('connection', () => {
   describe('setExpectedData()', () => {
