@@ -3,8 +3,8 @@ const {
 } = require('../../errors/badDataChunk');
 
 class DataBlock {
-  constructor(data, storage, expectedData) {
-    this.storage = storage;
+  constructor(data, store, expectedData) {
+    this.store = store;
     this.data = data;
     this.expectedData = this.convertDataToObject(expectedData);
   }

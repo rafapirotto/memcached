@@ -5,9 +5,9 @@ const { WrongArgumentNumberError } = require('../../errors/syntax');
 const { EMPTY_SPACE } = require('../../constants/index');
 
 class Storage {
-  constructor(options, storage) {
+  constructor(options, store) {
     this.options = options;
-    this.storage = storage;
+    this.store = store;
   }
 
   isFloat(numberAsString) {
@@ -15,7 +15,7 @@ class Storage {
   }
 
   getStorage() {
-    return this.storage;
+    return this.store;
   }
 
   validateNumberOptions() {

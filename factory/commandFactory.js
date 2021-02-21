@@ -23,27 +23,27 @@ const validateRequestSyntax = (command, options, expectedData) => {
   if (!isCommand(command) && !expectedData) throw new InvalidCommandError();
 };
 
-const create = (parsedRequest, expectedData, storage) => {
+const create = (parsedRequest, expectedData, store) => {
   const command = parsedRequest[0];
   const options = parsedRequest.slice(1);
   validateRequestSyntax(command, options, expectedData);
   switch (command) {
     case COMMANDS.get:
-      return new Get(options, storage);
+      return new Get(options, store);
     case COMMANDS.gets:
-      return new Gets(options, storage);
+      return new Gets(options, store);
     case COMMANDS.set:
-      return new Set(options, storage);
+      return new Set(options, store);
     case COMMANDS.add:
-      return new Add(options, storage);
+      return new Add(options, store);
     case COMMANDS.replace:
-      return new Replace(options, storage);
+      return new Replace(options, store);
     case COMMANDS.append:
-      return new Append(options, storage);
+      return new Append(options, store);
     case COMMANDS.prepend:
-      return new Prepend(options, storage);
+      return new Prepend(options, store);
     default:
-      return new DataBlock(command, storage, expectedData);
+      return new DataBlock(command, store, expectedData);
   }
 };
 

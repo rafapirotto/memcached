@@ -2,9 +2,9 @@ const { EMPTY_SPACE } = require('../../constants/index');
 const { END } = require('../../constants/messages');
 
 class Retrieval {
-  constructor(options, storage) {
+  constructor(options, store) {
     this.options = options;
-    this.storage = storage;
+    this.store = store;
   }
 
   execute() {
@@ -15,7 +15,7 @@ class Retrieval {
   getOutput(keys, toStringCallback) {
     let response = EMPTY_SPACE;
     keys.forEach((key) => {
-      const storageObj = this.storage.find(key);
+      const storageObj = this.store.find(key);
       if (storageObj) response += toStringCallback(storageObj);
     });
     response += END;

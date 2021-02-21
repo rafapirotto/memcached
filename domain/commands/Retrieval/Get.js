@@ -2,8 +2,8 @@ const { TERMINATOR } = require('../../constants/index');
 const Retrieval = require('./Retrieval');
 
 class Get extends Retrieval {
-  constructor(options, storage) {
-    super(options, storage);
+  constructor(options, store) {
+    super(options, store);
   }
 
   execute() {

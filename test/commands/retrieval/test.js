@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 
-const storage = require('../../../storage/Storage');
+const store = require('../../../store/Store');
 const { parse } = require('../../../parser/parser');
 const { create } = require('../../../factory/commandFactory');
 const Connection = require('../../../tcp/Connection');
@@ -17,7 +17,7 @@ const getCommandInstance = (dataString) => {
   const command = create(
     parsedRequest,
     connection.getExpectedData(),
-    storage,
+    store,
   );
   return command;
 };
@@ -43,7 +43,7 @@ describe('retrieval', () => {
     describe('normal flow', () => {
       describe('get existent key', () => {
         // 'get' is used as an example, but any retrieval command should behave in the same way
-        storage.save(testObj);
+        store.save(testObj);
         const dataString = `get ${testObj.key}`;
         const command = getCommandInstance(dataString);
         const result = command.execute();

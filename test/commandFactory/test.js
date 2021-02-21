@@ -4,7 +4,7 @@ const { create } = require('../../factory/commandFactory');
 const {
   Set, Add, Replace, Append, Prepend, Get, Gets, DataBlock,
 } = require('../../domain/commands');
-const storage = require('../../storage/Storage');
+const store = require('../../store/Store');
 const { NoOptionsError, InvalidCommandError } = require('../../domain/errors/syntax');
 const { DataExpectedError } = require('../../domain/errors/badDataChunk');
 const {
@@ -22,7 +22,7 @@ const getDataBlockCommandInstance = (parsedRequest, expectedData) => {
   const command = create(
     parsedRequest,
     expectedData,
-    storage,
+    store,
   );
   return command;
 };
@@ -32,7 +32,7 @@ const getStorageCommandInstance = (command, expectedData, request = null) => {
   const commandToReturn = create(
     parsedRequest,
     expectedData,
-    storage,
+    store,
   );
   return commandToReturn;
 };
@@ -42,7 +42,7 @@ const getRetrievalCommandInstance = (command, expectedData, request = null) => {
   const commandToReturn = create(
     parsedRequest,
     expectedData,
-    storage,
+    store,
   );
   return commandToReturn;
 };

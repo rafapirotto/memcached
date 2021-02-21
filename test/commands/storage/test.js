@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 
-const storage = require('../../../storage/Storage');
+const store = require('../../../store/Store');
 const { parse } = require('../../../parser/parser');
 const { create } = require('../../../factory/commandFactory');
 const Connection = require('../../../tcp/Connection');
@@ -29,7 +29,7 @@ const getCommandInstance = (dataString) => {
   const command = create(
     parsedRequest,
     connection.getExpectedData(),
-    storage,
+    store,
   );
   return command;
 };
