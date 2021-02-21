@@ -4,6 +4,7 @@ const store = require('../../store/Store');
 const { build } = require('../../domain/builder');
 const Connection = require('../../tcp/Connection');
 const { TERMINATOR, EMPTY_SPACE } = require('../../domain/constants/index');
+const { END } = require('../../domain/constants/messages');
 const { Set } = require('../../domain/commands');
 const DummySocket = require('../utils/DummySocket/DummySocket');
 
@@ -72,7 +73,7 @@ describe('connection', () => {
       build(connection, store);
       it('should return the corresponding nonempty response', () => {
         const actual = socket.text;
-        const expected = `END${TERMINATOR}`;
+        const expected = `${END}${TERMINATOR}`;
         assert.strictEqual(actual, expected);
       });
     });

@@ -5,6 +5,7 @@ const { parse } = require('../../../parser/parser');
 const { create } = require('../../../factory/commandFactory');
 const Connection = require('../../../tcp/Connection');
 const { TERMINATOR } = require('../../../domain/constants/index');
+const { END } = require('../../../domain/constants/messages');
 const DummySocket = require('../../utils/DummySocket/DummySocket');
 
 const stringToBuffer = (stringRequest) => Buffer.from(stringRequest + TERMINATOR, 'utf8');
@@ -50,7 +51,7 @@ describe('retrieval', () => {
         describe('correct response', () => {
           it('should return the corresponding response', () => {
             const actual = result.response;
-            const expected = `VALUE ${key} ${flags} ${bytes}\r\n${value}\r\nEND`;
+            const expected = `VALUE ${key} ${flags} ${bytes}${TERMINATOR}${value}${TERMINATOR}${END}`;
             assert.strictEqual(actual, expected);
           });
         });
@@ -69,7 +70,7 @@ describe('retrieval', () => {
         describe('correct response', () => {
           it('should return the corresponding response', () => {
             const actual = result.response;
-            const expected = 'END';
+            const expected = END;
             assert.strictEqual(actual, expected);
           });
         });
