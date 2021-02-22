@@ -75,12 +75,13 @@ where:
 
 * `[noreply]` is an optional string that removes the reply from the server
 
-Note: the cas command is equal to the previous but with an extra parameter `<unique_cas_key>` which is a unique 64-bit integer
+**Note:** the cas command is equal to the previous but with an extra parameter `<unique_cas_key>` which is a unique 64-bit integer.
+
 After the previous has been sent, the server will be expecting data in the following fashion:
 
 `<data>\r\n`
 
-where data must have a length of `<bytes>`.
+where `<data>` must have a length of `<bytes>`.
 
 The server can respond with:
 
@@ -165,3 +166,14 @@ and one of the following in case of failure:
 * `ERROR\r\n`
 
 * `CLIENT_ERROR bad data chunk\r\nERROR\r\n`
+
+### Examples
+
+#### Get
+
+    get key
+    VALUE key 0 2\r\n25\r\nEND\r\n
+#### Gets
+
+    gets key
+    VALUE key 0 2 1\r\n25\r\nEND\r\n
