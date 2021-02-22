@@ -15,11 +15,11 @@ class Prepend extends Storage {
     const {
       noreply,
     } = objToExecute;
-    const obj = super.getStorage().find(objToExecute.key);
+    const obj = super.getStore().find(objToExecute.key);
     if (obj) {
       obj.bytes += objToExecute.bytes;
       obj.value = objToExecute.value + obj.value;
-      super.getStorage().update(obj);
+      super.getStore().update(obj);
     }
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return obj ? STORED : NOT_STORED;

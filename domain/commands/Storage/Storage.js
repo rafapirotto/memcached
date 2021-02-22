@@ -14,7 +14,7 @@ class Storage {
     return numberAsString.indexOf('.') !== -1;
   }
 
-  getStorage() {
+  getStore() {
     return this.store;
   }
 

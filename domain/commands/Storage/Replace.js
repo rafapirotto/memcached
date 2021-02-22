@@ -15,8 +15,8 @@ class Replace extends Storage {
     const {
       noreply,
     } = objToExecute;
-    const { found } = super.getStorage().customFind(objToExecute.key);
-    if (found) super.getStorage().update(objToExecute);
+    const { found } = super.getStore().customFind(objToExecute.key);
+    if (found) super.getStore().update(objToExecute);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return found ? STORED : NOT_STORED;
   }

@@ -15,8 +15,8 @@ class Add extends Storage {
     const {
       noreply,
     } = objToExecute;
-    const { found } = super.getStorage().customFind(objToExecute.key);
-    if (!found) super.getStorage().save(objToExecute);
+    const { found } = super.getStore().customFind(objToExecute.key);
+    if (!found) super.getStore().save(objToExecute);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return found ? NOT_STORED : STORED;
   }

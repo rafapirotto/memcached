@@ -15,9 +15,9 @@ class Set extends Storage {
     const {
       key, noreply,
     } = objToExecute;
-    const { found } = super.getStorage().customFind(key);
-    if (found) super.getStorage().update(objToExecute);
-    else super.getStorage().save(objToExecute);
+    const { found } = super.getStore().customFind(key);
+    if (found) super.getStore().update(objToExecute);
+    else super.getStore().save(objToExecute);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return STORED;
   }
