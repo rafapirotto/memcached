@@ -1,7 +1,7 @@
 const { assert } = require('chai');
-const { Set } = require('../../../../domain/commands');
+const { Add } = require('../../../../domain/commands');
 const { EMPTY_SPACE } = require('../../../../domain/constants/index');
-const { STORED } = require('../../../../domain/constants/messages');
+const { STORED, NOT_STORED } = require('../../../../domain/constants/messages');
 const store = require('../../../../store/Store');
 
 const testObj1 = {
@@ -19,7 +19,7 @@ const testObj2 = {
   value: '333',
 };
 
-describe('set', () => {
+describe('add', () => {
   /*
   only doStorageOperation methods is tested
   reason: execute() was already tested in the storage command tests
@@ -36,16 +36,16 @@ describe('set', () => {
         });
         describe('without noreply', () => {
           it(`should return ${STORED}`, () => {
-            const set = new Set(null, store);
-            const actual = set.doStorageOperation(testObj1);
+            const add = new Add(null, store);
+            const actual = add.doStorageOperation(testObj1);
             const expected = STORED;
             assert.strictEqual(actual, expected);
           });
         });
         describe('with noreply', () => {
           it(`should return '${EMPTY_SPACE}'`, () => {
-            const set = new Set(null, store);
-            const actual = set.doStorageOperation({ ...testObj1, noreply: 'noreply' });
+            const add = new Add(null, store);
+            const actual = add.doStorageOperation({ ...testObj1, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -54,8 +54,8 @@ describe('set', () => {
       describe('correct object properties added', () => {
         before(() => {
           store.initialize();
-          const set = new Set(null, store);
-          set.doStorageOperation(testObj1);
+          const add = new Add(null, store);
+          add.doStorageOperation(testObj1);
         });
         describe('key', () => {
           it('should have saved the key property successfully', () => {
@@ -111,30 +111,33 @@ describe('set', () => {
       describe('correct message returned', () => {
         beforeEach(() => {
           store.initialize();
+          const add = new Add(null, store);
+          add.doStorageOperation(testObj1);
+          add.doStorageOperation(testObj2);
         });
         describe('without noreply', () => {
-          it(`should return ${STORED}`, () => {
-            const set = new Set(null, store);
-            const actual = set.doStorageOperation(testObj2);
-            const expected = STORED;
+          it(`should return ${NOT_STORED}`, () => {
+            const add = new Add(null, store);
+            const actual = add.doStorageOperation(testObj2);
+            const expected = NOT_STORED;
             assert.strictEqual(actual, expected);
           });
         });
         describe('with noreply', () => {
-          const set = new Set(null, store);
+          const add = new Add(null, store);
           it(`should return '${EMPTY_SPACE}'`, () => {
-            const actual = set.doStorageOperation({ ...testObj2, noreply: 'noreply' });
+            const actual = add.doStorageOperation({ ...testObj2, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
         });
       });
-      describe('correct object properties modified', () => {
+      describe('object properties not modified', () => {
         before(() => {
           store.initialize();
-          const set = new Set(null, store);
-          set.doStorageOperation(testObj1);
-          set.doStorageOperation(testObj2);
+          const add = new Add(null, store);
+          add.doStorageOperation(testObj1);
+          add.doStorageOperation(testObj2);
         });
         describe('key', () => {
           it('should have not modified the key property', () => {
@@ -145,42 +148,42 @@ describe('set', () => {
           });
         });
         describe('value', () => {
-          it('should have modified the value property successfully', () => {
+          it('should have not modified the value property', () => {
             const { value } = store.find(testObj2.key);
             const actual = value;
-            const expected = testObj2.value;
+            const expected = testObj1.value;
             assert.strictEqual(actual, expected);
           });
         });
         describe('flags', () => {
-          it('should have modified the flags property successfully', () => {
+          it('should have not modified the flags property', () => {
             const { flags } = store.find(testObj2.key);
             const actual = flags;
-            const expected = testObj2.flags;
+            const expected = testObj1.flags;
             assert.strictEqual(actual, expected);
           });
         });
         describe('exptime', () => {
-          it('should have modified the exptime property successfully', () => {
+          it('should have not modified the exptime property', () => {
             const { exptime } = store.find(testObj2.key);
             const actual = exptime;
-            const expected = testObj2.exptime;
+            const expected = testObj1.exptime;
             assert.strictEqual(actual, expected);
           });
         });
         describe('bytes', () => {
-          it('should have modified the bytes property successfully', () => {
+          it('should have not modified the bytes property', () => {
             const { bytes } = store.find(testObj2.key);
             const actual = bytes;
-            const expected = testObj2.bytes;
+            const expected = testObj1.bytes;
             assert.strictEqual(actual, expected);
           });
         });
         describe('cas', () => {
-          it('should return 2 in the cas property successfully', () => {
+          it('should have not modified the cas property', () => {
             const { cas } = store.find(testObj2.key);
             const actual = cas;
-            const expected = 2;
+            const expected = 1;
             assert.strictEqual(actual, expected);
           });
         });

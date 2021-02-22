@@ -5,7 +5,7 @@ class Storage {
 
   initialize() {
     this.store = [];
-    this.cas = 0;
+    this.cas = 1;
   }
 
   customFind(key) {
@@ -33,7 +33,7 @@ class Storage {
 
   update(obj) {
     const { index } = this.customFind(obj.key);
-    obj.cas = this.store[index].cas;
+    obj.cas = this.nextCas();
     this.store[index] = obj;
   }
 }

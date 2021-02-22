@@ -11,7 +11,7 @@ const testObj = {
   bytes: 2,
   noreply: undefined,
   value: '22',
-  cas: 0,
+  cas: 1,
 };
 
 const {
