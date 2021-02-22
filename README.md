@@ -14,7 +14,7 @@ Memcached is an open source, high-performance, distributed memory object caching
 
 * Unzip
 
-* Set environment variables (see the [Environment variables](#Environment_variables) section)
+* Set environment variables (see the [Environment variables](#Environment-variables) section)
 
 * Open terminal
 
@@ -192,4 +192,4 @@ The server uses 3 environment variables:
 
 `<PORT>`, `<IP>` and `<MAX_CONNECTIONS>`
 
-If not provided, the default values are 1337, 0.0.0.0 and 5 respectively.
+If not provided, the default values are `1337`, `0.0.0.0` and `5` respectively.
