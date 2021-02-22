@@ -55,6 +55,8 @@ Memcached is an open source, high-performance, distributed memory object caching
 
 ## Usage
 
+#### Storage
+
 The sytntax goes like this:
 
 `<command> <key> <flags> <exptime> <bytes> [noreply]\r\n`
@@ -133,3 +135,33 @@ and one of the following in case of failure:
     cas key 0 1200 9 1 noreply
     memcached
     STORED        
+
+#### Retrieval
+
+For the retrieval commands the sytntax is shorter:
+
+`<command> <key_1> <key2> <key_3>...<key_n>\r\n`
+
+where:
+
+* `<command>` is one of the following: `get` or `gets`.
+
+* `<key_x>` is a string that will uniquely identify the element.
+
+The server can respond with:
+
+* `VALUE <key> <flags> <bytes>\r\n<value>\r\nEND\r\n` in case the key in the get commands exist.
+
+and the following in case of a successful gets request:
+
+* `VALUE <key> <flags> <bytes> <cas>\r\n<value>\r\nEND\r\n` in case the key in the gets commands exist.
+
+or in case the keys doesn't exist:
+
+* `END\r\n`
+
+and one of the following in case of failure:
+
+* `ERROR\r\n`
+
+* `CLIENT_ERROR bad data chunk\r\nERROR\r\n`
