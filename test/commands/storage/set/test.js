@@ -188,5 +188,3 @@ describe('set', () => {
     });
   });
 });
-
-// caso de exptime negativo (no lo debe guardar)
