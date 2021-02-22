@@ -14,6 +14,8 @@ Memcached is an open source, high-performance, distributed memory object caching
 
 * Unzip
 
+* Set environment variables (see the [Environment variables](#Environment_variables) section)
+
 * Open terminal
 
 * Go to project location
