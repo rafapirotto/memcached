@@ -21,14 +21,14 @@ const testObj2 = {
 
 describe('add', () => {
   /*
-  only doStorageOperation methods is tested
+  only doStoreOperation methods is tested
   reason: execute() was already tested in the storage command tests
   because it just calls the superclass method
   */
   after(() => {
     store.initialize();
   });
-  describe('doStorageOperation()', () => {
+  describe('doStoreOperation()', () => {
     describe('non existent key', () => {
       describe('correct message returned', () => {
         beforeEach(() => {
@@ -37,7 +37,7 @@ describe('add', () => {
         describe('without noreply', () => {
           it(`should return ${STORED}`, () => {
             const add = new Add(null, store);
-            const actual = add.doStorageOperation(testObj1);
+            const actual = add.doStoreOperation(testObj1);
             const expected = STORED;
             assert.strictEqual(actual, expected);
           });
@@ -45,7 +45,7 @@ describe('add', () => {
         describe('with noreply', () => {
           it(`should return '${EMPTY_SPACE}'`, () => {
             const add = new Add(null, store);
-            const actual = add.doStorageOperation({ ...testObj1, noreply: 'noreply' });
+            const actual = add.doStoreOperation({ ...testObj1, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -55,7 +55,7 @@ describe('add', () => {
         before(() => {
           store.initialize();
           const add = new Add(null, store);
-          add.doStorageOperation(testObj1);
+          add.doStoreOperation(testObj1);
         });
         describe('key', () => {
           it('should have saved the key property successfully', () => {
@@ -112,13 +112,13 @@ describe('add', () => {
         beforeEach(() => {
           store.initialize();
           const add = new Add(null, store);
-          add.doStorageOperation(testObj1);
-          add.doStorageOperation(testObj2);
+          add.doStoreOperation(testObj1);
+          add.doStoreOperation(testObj2);
         });
         describe('without noreply', () => {
           it(`should return ${NOT_STORED}`, () => {
             const add = new Add(null, store);
-            const actual = add.doStorageOperation(testObj2);
+            const actual = add.doStoreOperation(testObj2);
             const expected = NOT_STORED;
             assert.strictEqual(actual, expected);
           });
@@ -126,7 +126,7 @@ describe('add', () => {
         describe('with noreply', () => {
           const add = new Add(null, store);
           it(`should return '${EMPTY_SPACE}'`, () => {
-            const actual = add.doStorageOperation({ ...testObj2, noreply: 'noreply' });
+            const actual = add.doStoreOperation({ ...testObj2, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -136,8 +136,8 @@ describe('add', () => {
         before(() => {
           store.initialize();
           const add = new Add(null, store);
-          add.doStorageOperation(testObj1);
-          add.doStorageOperation(testObj2);
+          add.doStoreOperation(testObj1);
+          add.doStoreOperation(testObj2);
         });
         describe('key', () => {
           it('should have not modified the key property', () => {

@@ -11,7 +11,7 @@ class Prepend extends Storage {
     return super.execute(this);
   }
 
-  doStorageOperation(objToExecute) {
+  doStoreOperation(objToExecute) {
     const {
       noreply,
     } = objToExecute;

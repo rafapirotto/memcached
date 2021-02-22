@@ -26,7 +26,7 @@ class DataBlock {
     this.validateDataBlock();
     const objToExecute = { ...this.expectedData, value: this.data };
     const { commandInstance } = objToExecute;
-    const response = commandInstance.doStorageOperation(objToExecute);
+    const response = commandInstance.doStoreOperation(objToExecute);
     return { response };
   }
 }

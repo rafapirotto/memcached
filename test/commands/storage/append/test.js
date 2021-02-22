@@ -21,14 +21,14 @@ const testObj2 = {
 
 describe('append', () => {
   /*
-  only doStorageOperation methods is tested
+  only doStoreOperation methods is tested
   reason: execute() was already tested in the storage command tests
   because it just calls the superclass method
   */
   after(() => {
     store.initialize();
   });
-  describe('doStorageOperation()', () => {
+  describe('doStoreOperation()', () => {
     describe('non existent key', () => {
       describe('correct message returned', () => {
         beforeEach(() => {
@@ -37,7 +37,7 @@ describe('append', () => {
         describe('without noreply', () => {
           it(`should return ${NOT_STORED}`, () => {
             const append = new Append(null, store);
-            const actual = append.doStorageOperation(testObj1);
+            const actual = append.doStoreOperation(testObj1);
             const expected = NOT_STORED;
             assert.strictEqual(actual, expected);
           });
@@ -45,7 +45,7 @@ describe('append', () => {
         describe('with noreply', () => {
           it(`should return '${EMPTY_SPACE}'`, () => {
             const append = new Append(null, store);
-            const actual = append.doStorageOperation({ ...testObj1, noreply: 'noreply' });
+            const actual = append.doStoreOperation({ ...testObj1, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -55,7 +55,7 @@ describe('append', () => {
         before(() => {
           store.initialize();
           const append = new Append(null, store);
-          append.doStorageOperation(testObj1);
+          append.doStoreOperation(testObj1);
         });
         describe('key', () => {
           it('should have not added the key property', () => {
@@ -113,8 +113,8 @@ describe('append', () => {
           store.initialize();
           const set = new Set(null, store);
           const append = new Append(null, store);
-          set.doStorageOperation(testObj1);
-          append.doStorageOperation(testObj2);
+          set.doStoreOperation(testObj1);
+          append.doStoreOperation(testObj2);
         });
         describe('key', () => {
           it('should have not replaced the key property successfully', () => {

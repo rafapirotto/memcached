@@ -21,14 +21,14 @@ const testObj2 = {
 
 describe('prepend', () => {
   /*
-  only doStorageOperation methods is tested
+  only doStoreOperation methods is tested
   reason: execute() was already tested in the storage command tests
   because it just calls the superclass method
   */
   after(() => {
     store.initialize();
   });
-  describe('doStorageOperation()', () => {
+  describe('doStoreOperation()', () => {
     describe('non existent key', () => {
       describe('correct message returned', () => {
         beforeEach(() => {
@@ -37,7 +37,7 @@ describe('prepend', () => {
         describe('without noreply', () => {
           it(`should return ${NOT_STORED}`, () => {
             const prepend = new Prepend(null, store);
-            const actual = prepend.doStorageOperation(testObj1);
+            const actual = prepend.doStoreOperation(testObj1);
             const expected = NOT_STORED;
             assert.strictEqual(actual, expected);
           });
@@ -45,7 +45,7 @@ describe('prepend', () => {
         describe('with noreply', () => {
           it(`should return '${EMPTY_SPACE}'`, () => {
             const prepend = new Prepend(null, store);
-            const actual = prepend.doStorageOperation({ ...testObj1, noreply: 'noreply' });
+            const actual = prepend.doStoreOperation({ ...testObj1, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -55,7 +55,7 @@ describe('prepend', () => {
         before(() => {
           store.initialize();
           const prepend = new Prepend(null, store);
-          prepend.doStorageOperation(testObj1);
+          prepend.doStoreOperation(testObj1);
         });
         describe('key', () => {
           it('should have not added the key property', () => {
@@ -113,8 +113,8 @@ describe('prepend', () => {
           store.initialize();
           const set = new Set(null, store);
           const prepend = new Prepend(null, store);
-          set.doStorageOperation(testObj1);
-          prepend.doStorageOperation(testObj2);
+          set.doStoreOperation(testObj1);
+          prepend.doStoreOperation(testObj2);
         });
         describe('key', () => {
           it('should have not replaced the key property successfully', () => {

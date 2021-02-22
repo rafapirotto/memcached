@@ -11,7 +11,7 @@ class Set extends Storage {
     return super.execute(this);
   }
 
-  doStorageOperation(objToExecute) {
+  doStoreOperation(objToExecute) {
     const {
       key, noreply,
     } = objToExecute;

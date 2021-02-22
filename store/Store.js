@@ -1,4 +1,4 @@
-class Storage {
+class Store {
   constructor() {
     this.initialize();
   }
@@ -38,4 +38,4 @@ class Storage {
   }
 }
 
-module.exports = new Storage();
+module.exports = new Store();

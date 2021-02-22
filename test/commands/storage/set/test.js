@@ -21,14 +21,14 @@ const testObj2 = {
 
 describe('set', () => {
   /*
-  only doStorageOperation methods is tested
+  only doStoreOperation methods is tested
   reason: execute() was already tested in the storage command tests
   because it just calls the superclass method
   */
   after(() => {
     store.initialize();
   });
-  describe('doStorageOperation()', () => {
+  describe('doStoreOperation()', () => {
     describe('non existent key', () => {
       describe('correct message returned', () => {
         beforeEach(() => {
@@ -37,7 +37,7 @@ describe('set', () => {
         describe('without noreply', () => {
           it(`should return ${STORED}`, () => {
             const set = new Set(null, store);
-            const actual = set.doStorageOperation(testObj1);
+            const actual = set.doStoreOperation(testObj1);
             const expected = STORED;
             assert.strictEqual(actual, expected);
           });
@@ -45,7 +45,7 @@ describe('set', () => {
         describe('with noreply', () => {
           it(`should return '${EMPTY_SPACE}'`, () => {
             const set = new Set(null, store);
-            const actual = set.doStorageOperation({ ...testObj1, noreply: 'noreply' });
+            const actual = set.doStoreOperation({ ...testObj1, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -55,7 +55,7 @@ describe('set', () => {
         before(() => {
           store.initialize();
           const set = new Set(null, store);
-          set.doStorageOperation(testObj1);
+          set.doStoreOperation(testObj1);
         });
         describe('key', () => {
           it('should have saved the key property successfully', () => {
@@ -115,7 +115,7 @@ describe('set', () => {
         describe('without noreply', () => {
           it(`should return ${STORED}`, () => {
             const set = new Set(null, store);
-            const actual = set.doStorageOperation(testObj2);
+            const actual = set.doStoreOperation(testObj2);
             const expected = STORED;
             assert.strictEqual(actual, expected);
           });
@@ -123,7 +123,7 @@ describe('set', () => {
         describe('with noreply', () => {
           const set = new Set(null, store);
           it(`should return '${EMPTY_SPACE}'`, () => {
-            const actual = set.doStorageOperation({ ...testObj2, noreply: 'noreply' });
+            const actual = set.doStoreOperation({ ...testObj2, noreply: 'noreply' });
             const expected = EMPTY_SPACE;
             assert.strictEqual(actual, expected);
           });
@@ -133,8 +133,8 @@ describe('set', () => {
         before(() => {
           store.initialize();
           const set = new Set(null, store);
-          set.doStorageOperation(testObj1);
-          set.doStorageOperation(testObj2);
+          set.doStoreOperation(testObj1);
+          set.doStoreOperation(testObj2);
         });
         describe('key', () => {
           it('should have not modified the key property', () => {

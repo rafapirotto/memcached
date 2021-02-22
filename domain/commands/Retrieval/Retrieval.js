@@ -15,8 +15,8 @@ class Retrieval {
   getOutput(keys, toStringCallback) {
     let response = EMPTY_SPACE;
     keys.forEach((key) => {
-      const storageObj = this.store.find(key);
-      if (storageObj) response += toStringCallback(storageObj);
+      const storeObj = this.store.find(key);
+      if (storeObj) response += toStringCallback(storeObj);
     });
     response += END;
     return response;
