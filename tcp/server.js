@@ -1,17 +1,20 @@
 /* eslint-disable no-unused-vars */
 const net = require('net');
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 const store = require('../store/Store');
 const Connection = require('./Connection');
 const { handleErrors } = require('../domain/errors/handleErrors');
 const { build } = require('../domain/Builder');
 
-// TODO: move to .env file
-const PORT = 1337;
-const IP = '0.0.0.0';
-const MAX_CONNECTIONS = 5;
-//
+const DEFAULT_PORT = 1337;
+const DEFAULT_IP = '0.0.0.0';
+const DEFAULT_MAX_CONNECTIONS = 5;
+const PORT = process.env.PORT || DEFAULT_PORT;
+const IP = process.env.IP || DEFAULT_IP;
+const MAX_CONNECTIONS = process.env.MAX_CONNECTIONS || DEFAULT_MAX_CONNECTIONS;
+
 const start = () => {
   const server = net.createServer((socket) => {
     server.maxConnections = MAX_CONNECTIONS;

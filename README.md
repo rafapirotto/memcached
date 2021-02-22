@@ -183,3 +183,11 @@ and one of the following in case of failure:
     25
     END
     
+
+## Environment variables
+
+The server uses 3 environment variables:
+
+`<PORT>`, `<IP>` and `<MAX_CONNECTIONS>`
+
+If not provided, the default values are 1337, 0.0.0.0 and 5 respectively.
