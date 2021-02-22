@@ -8,7 +8,7 @@ Memcached is an open source, high-performance, distributed memory object caching
 ## Instructions
 ### Run server
 
-The server runs in the 1337 port
+**The server runs in the 1337 port by default**
 
 * Download zip file from the [github repository](https://github.com/rafapirotto/memcached)
 
@@ -23,7 +23,7 @@ The server runs in the 1337 port
       npm install
       node index.js
 
-## Run client
+### Run client
 
 * Open terminal
 
@@ -31,7 +31,7 @@ The server runs in the 1337 port
 
       telnet localhost 1337
     
-## Run tests
+### Run tests
 
 * Open terminal
 * Go to project location
