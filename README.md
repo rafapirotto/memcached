@@ -48,7 +48,7 @@ Memcached is an open source, high-performance, distributed memory object caching
 * append
 * prepend
 * cas
-### Storage
+### Retrieval
 
 * get
 * gets
@@ -73,6 +73,7 @@ where:
 
 * `[noreply]` is an optional string that removes the reply from the server
 
+Note: the cas command is equal to the previous but with an extra parameter `<unique_cas_key>` which is a unique 64-bit integer
 After the previous has been sent, the server will be expecting data in the following fashion:
 
 `<data>\r\n`
@@ -95,39 +96,39 @@ and one of the following in case of failure:
 
 * `CLIENT_ERROR bad command line format\r\n`
 
-Examples
+### Examples
 
-Set
+#### Set
 
     set key 0 1200 2 noreply
     23
     STORED
 
-Add
+#### Add
 
     add key 0 1200 2
     23
     STORED
 
-Replace
+#### Replace
 
     replace key 0 30 3 noreply
     333
     STORED
 
-Append
+#### Append
 
     append key 0 1200 5
     hello
     STORED   
 
-Prepend
+#### Prepend
 
     prepend key 0 1200 11 noreply
     helloworld!
     STORED 
 
-Cas
+#### Cas
 
     cas key 0 1200 9 1 noreply
     memcached
