@@ -70,14 +70,14 @@ describe('gets', () => {
     });
     describe('nonexisting keys', () => {
       describe('single key', () => {
-        it('should return END', () => {
+        it(`should return ${END}`, () => {
           const actual = getOutput([nonExistingKey]);
           const expected = END;
           assert.strictEqual(actual, expected);
         });
       });
       describe('multiple keys', () => {
-        it('should return END', () => {
+        it(`should return ${END}`, () => {
           const actual = getOutput([nonExistingKey, nonExistingKey, nonExistingKey]);
           const expected = END;
           assert.strictEqual(actual, expected);
