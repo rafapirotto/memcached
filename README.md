@@ -73,7 +73,7 @@ where:
 
 * `<bytes>` is the length of the data sent in bytes.
 
-* `[noreply]` is an optional string that removes the reply from the server
+* `[noreply]` is an optional string that removes the reply from the server.
 
 **Note:** the cas command is equal to the previous but with an extra parameter `<unique_cas_key>` which is a unique 64-bit integer.
 
