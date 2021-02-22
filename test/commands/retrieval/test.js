@@ -39,17 +39,26 @@ const {
   value,
 } = testObj;
 
+const getResult = (dataString) => {
+  const command = getCommandInstance(dataString);
+  const result = command.execute();
+  return result;
+};
+
 describe('retrieval', () => {
+  after(() => {
+    store.initialize();
+  });
   describe('execute()', () => {
     describe('normal flow', () => {
       describe('get existent key', () => {
         // 'get' is used as an example, but any retrieval command should behave in the same way
-        store.save(testObj);
-        const dataString = `get ${testObj.key}`;
-        const command = getCommandInstance(dataString);
-        const result = command.execute();
+        before(() => {
+          store.save(testObj);
+        });
         describe('correct response', () => {
           it('should return the corresponding response', () => {
+            const result = getResult(`get ${testObj.key}`);
             const actual = result.response;
             const expected = `VALUE ${key} ${flags} ${bytes}${TERMINATOR}${value}${TERMINATOR}${END}`;
             assert.strictEqual(actual, expected);
@@ -57,6 +66,7 @@ describe('retrieval', () => {
         });
         describe('correct result', () => {
           it('should return undefined', () => {
+            const result = getResult(`get ${testObj.key}`);
             const actual = result.result;
             const expected = undefined;
             assert.strictEqual(actual, expected);
@@ -64,11 +74,9 @@ describe('retrieval', () => {
         });
       });
       describe('get nonexistent key', () => {
-        const dataString = 'get nonexistent_key';
-        const command = getCommandInstance(dataString);
-        const result = command.execute();
         describe('correct response', () => {
           it('should return the corresponding response', () => {
+            const result = getResult('get nonexistent_key');
             const actual = result.response;
             const expected = END;
             assert.strictEqual(actual, expected);
@@ -76,6 +84,7 @@ describe('retrieval', () => {
         });
         describe('correct result', () => {
           it('should return undefined', () => {
+            const result = getResult('get nonexistent_key');
             const actual = result.result;
             const expected = undefined;
             assert.strictEqual(actual, expected);

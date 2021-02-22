@@ -34,15 +34,22 @@ const getCommandInstance = (dataString) => {
   return command;
 };
 
+const getResult = (dataString) => {
+  const command = getCommandInstance(dataString);
+  const result = command.execute();
+  return result;
+};
+
 describe('storage', () => {
+  after(() => {
+    store.initialize();
+  });
   describe('execute()', () => {
     describe('normal flow', () => {
       // 'add' is used as an example, but any storage command should behave in the same way
-      const dataString = `add ${key} ${flags} ${exptime} ${bytes}`;
-      const command = getCommandInstance(dataString);
-      const result = command.execute();
       describe('correct response', () => {
         it('should return an empty space', () => {
+          const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
           const actual = result.response;
           const expected = EMPTY_SPACE;
           assert.strictEqual(actual, expected);
@@ -50,6 +57,7 @@ describe('storage', () => {
       });
       describe('correct data length', () => {
         it('should return 5', () => {
+          const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
           const actual = result.data.length;
           const expected = 5;
           assert.strictEqual(actual, expected);
@@ -58,6 +66,7 @@ describe('storage', () => {
       describe('correct data content', () => {
         describe('command', () => {
           it('should return an instance of the Add command', () => {
+            const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
             const actual = result.data[0] instanceof Add;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -65,6 +74,7 @@ describe('storage', () => {
         });
         describe('key', () => {
           it('should return the corresponding key', () => {
+            const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
             const actual = result.data[1];
             const expected = key;
             assert.strictEqual(actual, expected);
@@ -72,6 +82,7 @@ describe('storage', () => {
         });
         describe('flags', () => {
           it('should return the corresponding flags', () => {
+            const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
             const actual = result.data[2];
             const expected = flags;
             assert.strictEqual(actual, expected);
@@ -79,6 +90,7 @@ describe('storage', () => {
         });
         describe('exptime', () => {
           it('should return the corresponding exptime', () => {
+            const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
             const actual = result.data[3];
             const expected = exptime;
             assert.strictEqual(actual, expected);
@@ -86,6 +98,7 @@ describe('storage', () => {
         });
         describe('bytes', () => {
           it('should return the corresponding bytes', () => {
+            const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
             const actual = result.data[4];
             const expected = bytes;
             assert.strictEqual(actual, expected);

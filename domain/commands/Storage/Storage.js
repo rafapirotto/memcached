@@ -23,7 +23,6 @@ class Storage {
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
       const optionAsInt = Number(option);
-      // TODO: validate negative exptime
       const notValid = Number.isNaN(optionAsInt)
       || this.isFloat(option)
       || (optionAsInt < 0 && exptimeIndex !== index);

@@ -50,6 +50,9 @@ const getRetrievalCommandInstance = (command, expectedData, request = null) => {
 const getExpectedData = () => [getStorageCommandInstance('set', null), key, flags, exptime, bytes, noreply];
 
 describe('commandFactory', () => {
+  after(() => {
+    store.initialize();
+  });
   describe('create()', () => {
     describe('when not expecting data', () => {
       describe('storage commands', () => {

@@ -16,6 +16,9 @@ const exptime = 3600;
 const bytes = 2;
 
 describe('connection', () => {
+  after(() => {
+    store.initialize();
+  });
   describe('setExpectedData()', () => {
     describe('with expectedData', () => {
       const socket = new DummySocket();

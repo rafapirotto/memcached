@@ -1,5 +1,4 @@
 const { assert } = require('chai');
-const { before } = require('mocha');
 const { Get } = require('../../../../domain/commands');
 const { TERMINATOR } = require('../../../../domain/constants/index');
 const { END } = require('../../../../domain/constants/messages');
@@ -34,6 +33,9 @@ describe('get', () => {
   reason: execute() was already tested in the retrieval command tests
   because it just calls the superclass method
   */
+  after(() => {
+    store.initialize();
+  });
   describe('toString()', () => {
     it('should return the corresponding string', () => {
       const get = new Get(null, store);
