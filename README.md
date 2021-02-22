@@ -120,13 +120,13 @@ and one of the following in case of failure:
 
     append key 0 1200 5
     hello
-    STORED   
+    NOT_STORED   
 
 #### Prepend
 
     prepend key 0 1200 11 noreply
     helloworld!
-    STORED 
+    NOT_STORED 
 
 #### Cas
 
