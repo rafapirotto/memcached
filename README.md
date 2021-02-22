@@ -157,7 +157,7 @@ and the following in case of a successful gets request:
 
 * `VALUE <key> <flags> <bytes> <cas>\r\n<value>\r\nEND\r\n` in case the key in the gets commands exist.
 
-or in case the keys doesn't exist:
+or in case the key doesn't exist:
 
 * `END\r\n`
 
@@ -172,8 +172,14 @@ and one of the following in case of failure:
 #### Get
 
     get key
-    VALUE key 0 2\r\n25\r\nEND\r\n
+    VALUE key 0 2
+    25
+    END
+    
 #### Gets
 
     gets key
-    VALUE key 0 2 1\r\n25\r\nEND\r\n
+    VALUE key 0 2 1
+    25
+    END
+    
