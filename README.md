@@ -5,7 +5,7 @@
 
 Memcached is an open source, high-performance, distributed memory object caching system. For more information check out the official memcached [github repository](https://github.com/memcached/memcached).
 
-Index
+## Index
 * [Instructions](#instructions)
 * [Supported commands](#supported-commands)
 * [Usage](#usage)
