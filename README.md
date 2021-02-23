@@ -14,7 +14,7 @@ Memcached is an open source, high-performance, distributed memory object caching
 
 * Unzip
 
-* Set environment variables (see the [Environment variables](#Environment-variables) section)
+* Set environment variables using an .env file (see the [Environment variables](#Environment-variables) section)
 
 * Open terminal
 
@@ -77,7 +77,7 @@ where:
 
 * `[noreply]` is an optional string that removes the reply from the server.
 
-**Note:** the cas command is equal to the previous but with an extra parameter `<unique_cas_key>` which is a unique 64-bit integer.
+**Note:** the cas command is equal to the previously mentioned but with an extra parameter `<unique_cas_key>` which is a unique 64-bit integer.
 
 After the previous has been sent, the server will be expecting data in the following fashion:
 
@@ -154,11 +154,11 @@ where:
 
 The server can respond with:
 
-* `VALUE <key> <flags> <bytes>\r\n<value>\r\nEND\r\n` in case the key in the get commands exist.
+* `VALUE <key> <flags> <bytes>\r\n<value>\r\nEND\r\n` in case the key in the get commands exists.
 
 and the following in case of a successful gets request:
 
-* `VALUE <key> <flags> <bytes> <cas>\r\n<value>\r\nEND\r\n` in case the key in the gets commands exist.
+* `VALUE <key> <flags> <bytes> <cas>\r\n<value>\r\nEND\r\n` in case the key in the gets commands exists.
 
 or in case the key doesn't exist:
 
