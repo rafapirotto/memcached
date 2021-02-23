@@ -46,7 +46,7 @@ describe('get', () => {
   });
   describe('getOutput()', () => {
     before(() => {
-      store.save(testObj);
+      store.insert(testObj);
     });
 
     describe('existing keys', () => {

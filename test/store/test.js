@@ -145,11 +145,11 @@ describe('store', () => {
       assert.strictEqual(actual, expected);
     });
   });
-  describe('save()', () => {
+  describe('insert()', () => {
     before(() => {
       store.initialize();
-      store.save(testObj1);
-      store.save(testObj2);
+      store.insert(testObj1);
+      store.insert(testObj2);
     });
     describe('delete the commandInstance property', () => {
       it('should have deleted the commandInstance property', () => {
@@ -183,7 +183,7 @@ describe('store', () => {
   describe('update()', () => {
     before(() => {
       store.initialize();
-      store.save(testObj1);
+      store.insert(testObj1);
       store.update(testObj3);
     });
     describe('updated object properties', () => {

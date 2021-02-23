@@ -54,7 +54,7 @@ describe('retrieval', () => {
       describe('get existent key', () => {
         // 'get' is used as an example, but any retrieval command should behave in the same way
         before(() => {
-          store.save(testObj);
+          store.insert(testObj);
         });
         describe('correct response', () => {
           it('should return the corresponding response', () => {
