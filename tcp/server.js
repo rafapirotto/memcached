@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const net = require('net');
-const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
 const store = require('../store/Store');
@@ -39,7 +38,6 @@ const start = () => {
   });
 
   server.on('connection', (socket) => {
-    socket.id = uuidv4();
     console.log(
       `Client connected: ${socket.remoteAddress}:${socket.remotePort}`,
     );
