@@ -5,7 +5,7 @@ require('dotenv').config();
 const store = require('../store/Store');
 const Connection = require('./Connection');
 const { handleErrors } = require('../domain/errors/handleErrors');
-const { build } = require('../domain/Builder');
+const { build } = require('../domain/builder');
 
 const DEFAULT_PORT = 1337;
 const DEFAULT_IP = '0.0.0.0';
