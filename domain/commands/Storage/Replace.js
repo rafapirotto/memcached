@@ -8,7 +8,7 @@ class Replace extends Storage {
   }
 
   execute() {
-    return super.execute(this);
+    return super.execute();
   }
 
   doStoreOperation(objToExecute) {

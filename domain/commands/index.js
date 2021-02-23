@@ -6,6 +6,7 @@ const Replace = require('./Storage/Replace');
 const DataBlock = require('./DataBlock/DataBlock');
 const Append = require('./Storage/Append');
 const Prepend = require('./Storage/Prepend');
+const Cas = require('./Storage/Cas');
 
 module.exports = {
   Get,
@@ -16,4 +17,5 @@ module.exports = {
   Replace,
   Append,
   Prepend,
+  Cas,
 };

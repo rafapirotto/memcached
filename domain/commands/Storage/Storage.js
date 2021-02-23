@@ -35,12 +35,22 @@ class Storage {
     return EMPTY_SPACE;
   }
 
-  execute(commandInstance) {
-    const options = this.options.length;
-    if (options > 5 || options < 4) throw new WrongArgumentNumberError();
+  validateOptions() {
+    if (this.options.length !== 4) throw new WrongArgumentNumberError();
+  }
+
+  execute() {
+    this.validateOptions();
     this.validateNumberOptions();
-    this.options.splice(0, 0, commandInstance);
+    this.options.splice(0, 0, this);
     return { response: this.getOutput(), data: this.options };
+  }
+
+  convertDataToObject(expectedData) {
+    const [commandInstance, key, flags, exptime, bytes, noreply] = expectedData;
+    return {
+      commandInstance, key, flags, exptime, bytes, noreply,
+    };
   }
 }
 

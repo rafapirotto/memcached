@@ -1,5 +1,5 @@
 const {
-  Get, Gets, Set, DataBlock, Add, Replace, Prepend, Append,
+  Get, Gets, Set, DataBlock, Add, Replace, Prepend, Append, Cas,
 } = require('../domain/commands/index');
 const {
   DataExpectedError,
@@ -43,6 +43,8 @@ const create = (parsedRequest, expectedData, store) => {
       return new Append(options, store);
     case COMMANDS.prepend:
       return new Prepend(options, store);
+    case COMMANDS.cas:
+      return new Cas(options, store);
     default:
       return new DataBlock(command, store, expectedData);
   }

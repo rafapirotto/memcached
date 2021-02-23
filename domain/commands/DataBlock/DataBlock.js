@@ -6,7 +6,8 @@ class DataBlock {
   constructor(data, store, expectedData) {
     this.store = store;
     this.data = data;
-    this.expectedData = this.convertDataToObject(expectedData);
+    const commandInstance = expectedData[0];
+    this.expectedData = commandInstance.convertDataToObject(expectedData);
   }
 
   validateDataBlock() {
@@ -15,13 +16,6 @@ class DataBlock {
     if (Buffer.byteLength(this.data) !== bytes) {
       throw new WrongByteLengthError(noreply);
     }
-  }
-
-  convertDataToObject(expectedData) {
-    const [commandInstance, key, flags, exptime, bytes, noreply] = expectedData;
-    return {
-      commandInstance, key, flags, exptime, bytes, noreply,
-    };
   }
 
   execute() {
