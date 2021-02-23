@@ -1,8 +1,8 @@
 const BadDataChunkError = require('./BadDataChunkError');
 
 class DataExpectedError extends BadDataChunkError {
-  constructor() {
-    super();
+  constructor(noreply) {
+    super(noreply);
   }
 }
 module.exports = DataExpectedError;

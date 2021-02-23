@@ -1,5 +1,5 @@
 const {
-  DataExpectedError, WrongByteLengthError,
+  WrongByteLengthError,
 } = require('../../errors/badDataChunk');
 
 class DataBlock {
@@ -10,9 +10,11 @@ class DataBlock {
   }
 
   validateDataBlock() {
-    if (!this.expectedData) throw new DataExpectedError();
     // byteLength -> returns the number of bytes required to store a string
-    if (Buffer.byteLength(this.data) !== this.expectedData.bytes) throw new WrongByteLengthError();
+    const { bytes, noreply } = this.expectedData;
+    if (Buffer.byteLength(this.data) !== bytes) {
+      throw new WrongByteLengthError(noreply);
+    }
   }
 
   convertDataToObject(expectedData) {

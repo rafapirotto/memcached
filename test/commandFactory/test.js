@@ -47,7 +47,7 @@ const getRetrievalCommandInstance = (command, expectedData, request = null) => {
   return commandToReturn;
 };
 
-const getExpectedData = () => [getStorageCommandInstance('set', null), key, flags, exptime, bytes, noreply];
+const getExpectedData = () => [getStorageCommandInstance('set', null), key, flags, exptime, bytes];
 
 describe('commandFactory', () => {
   after(() => {
@@ -129,81 +129,81 @@ describe('commandFactory', () => {
         });
       });
     });
-  });
-  describe('when expecting data', () => {
-    describe('storage commands', () => {
-      describe('Set', () => {
-        it('should throw an instance of DataExpectedError', () => {
-          try {
-            const expectedData = getExpectedData();
-            getStorageCommandInstance('set', expectedData);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
+    describe('when expecting data', () => {
+      describe('storage commands', () => {
+        describe('Set', () => {
+          it('should throw an instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getStorageCommandInstance('set', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Add', () => {
+          it('should throw an instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getStorageCommandInstance('add', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Replace', () => {
+          it('should throw an instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getStorageCommandInstance('replace', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Append', () => {
+          it('should throw an instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getStorageCommandInstance('append', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Prepend', () => {
+          it('should throw an instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getStorageCommandInstance('prepend', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
         });
       });
-      describe('Add', () => {
-        it('should throw an instance of DataExpectedError', () => {
-          try {
-            const expectedData = getExpectedData();
-            getStorageCommandInstance('add', expectedData);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Replace', () => {
-        it('should throw an instance of DataExpectedError', () => {
-          try {
-            const expectedData = getExpectedData();
-            getStorageCommandInstance('replace', expectedData);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Append', () => {
-        it('should throw an instance of DataExpectedError', () => {
-          try {
-            const expectedData = getExpectedData();
-            getStorageCommandInstance('append', expectedData);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Prepend', () => {
-        it('should throw an instance of DataExpectedError', () => {
-          try {
-            const expectedData = getExpectedData();
-            getStorageCommandInstance('prepend', expectedData);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-    });
-    describe('retrieval commands', () => {
-      describe('Get', () => {
-        it('should throw an instance of DataExpectedError', () => {
-          try {
-            const expectedData = getExpectedData();
-            getRetrievalCommandInstance('get', expectedData);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
+      describe('retrieval commands', () => {
+        describe('Get', () => {
+          it('should throw an instance of DataExpectedError', () => {
+            try {
+              const expectedData = getExpectedData();
+              getRetrievalCommandInstance('get', expectedData);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
         });
         describe('Gets', () => {
           it('should throw an instance of DataExpectedError', () => {
@@ -217,96 +217,96 @@ describe('commandFactory', () => {
             }
           });
         });
-      });
-      describe('data block', () => {
-        it('should return an instance of the DataBlock command', () => {
-          const expectedData = getExpectedData();
-          const command = getDataBlockCommandInstance(['datablock'], expectedData);
-          const actual = command instanceof DataBlock;
-          const expected = true;
-          assert.strictEqual(actual, expected);
+        describe('data block', () => {
+          it('should return an instance of the DataBlock command', () => {
+            const expectedData = getExpectedData();
+            const command = getDataBlockCommandInstance(['datablock'], expectedData);
+            const actual = command instanceof DataBlock;
+            const expected = true;
+            assert.strictEqual(actual, expected);
+          });
         });
       });
     });
-  });
-  describe('when no arguments are provided with the command', () => {
-    describe('storage commands', () => {
-      describe('Set', () => {
-        it('should throw an instance of NoOptionsError', () => {
-          try {
-            getStorageCommandInstance('set', null, ['set']);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Add', () => {
-        it('should throw an instance of NoOptionsError', () => {
-          try {
-            getStorageCommandInstance('add', null, ['add']);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Replace', () => {
-        it('should throw an instance of NoOptionsError', () => {
-          try {
-            getStorageCommandInstance('replace', null, ['replace']);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Append', () => {
-        it('should throw an instance of NoOptionsError', () => {
-          try {
-            getStorageCommandInstance('append', null, ['append']);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-      describe('Prepend', () => {
-        it('should throw an instance of NoOptionsError', () => {
-          try {
-            getStorageCommandInstance('prepend', null, ['prepend']);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-      });
-    });
-    describe('retrieval commands', () => {
-      describe('Get', () => {
-        it('should throw an instance of NoOptionsError', () => {
-          try {
-            getRetrievalCommandInstance('get', null, ['get']);
-            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
-          } catch (e) {
-            if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
-            else assert.fail(WRONG_EXCEPTION_THROWN);
-          }
-        });
-        describe('Gets', () => {
+    describe('when no arguments are provided with the command', () => {
+      describe('storage commands', () => {
+        describe('Set', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getRetrievalCommandInstance('gets', null, ['gets']);
+              getStorageCommandInstance('set', null, ['set']);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
               else assert.fail(WRONG_EXCEPTION_THROWN);
             }
+          });
+        });
+        describe('Add', () => {
+          it('should throw an instance of NoOptionsError', () => {
+            try {
+              getStorageCommandInstance('add', null, ['add']);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Replace', () => {
+          it('should throw an instance of NoOptionsError', () => {
+            try {
+              getStorageCommandInstance('replace', null, ['replace']);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Append', () => {
+          it('should throw an instance of NoOptionsError', () => {
+            try {
+              getStorageCommandInstance('append', null, ['append']);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+        describe('Prepend', () => {
+          it('should throw an instance of NoOptionsError', () => {
+            try {
+              getStorageCommandInstance('prepend', null, ['prepend']);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+        });
+      });
+      describe('retrieval commands', () => {
+        describe('Get', () => {
+          it('should throw an instance of NoOptionsError', () => {
+            try {
+              getRetrievalCommandInstance('get', null, ['get']);
+              assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+            } catch (e) {
+              if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+              else assert.fail(WRONG_EXCEPTION_THROWN);
+            }
+          });
+          describe('Gets', () => {
+            it('should throw an instance of NoOptionsError', () => {
+              try {
+                getRetrievalCommandInstance('gets', null, ['gets']);
+                assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+              } catch (e) {
+                if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
+                else assert.fail(WRONG_EXCEPTION_THROWN);
+              }
+            });
           });
         });
       });

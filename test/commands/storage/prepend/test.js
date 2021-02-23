@@ -118,7 +118,6 @@ describe('prepend', () => {
         });
         describe('key', () => {
           it('should have not replaced the key property successfully', () => {
-            console.log('store', store);
             const { key } = store.find(testObj2.key);
             const actual = key;
             const expected = testObj1.key;

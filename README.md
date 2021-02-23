@@ -105,9 +105,10 @@ and one of the following in case of failure:
 
 #### Set
 
-    set key 0 1200 2 noreply
-    23
-    STORED
+    set key 0 1200 2
+    333
+    CLIENT_ERROR bad data chunk
+    ERROR
 
 #### Add
 
@@ -119,23 +120,21 @@ and one of the following in case of failure:
 
     replace key 0 30 3 noreply
     333
-    STORED
 
 #### Append
 
-    append key 0 1200 5
+    append other_key 0 1200 5
     hello
     NOT_STORED   
 
 #### Prepend
 
-    prepend key 0 1200 11 noreply
+    prepend other_key 0 1200 11 noreply
     helloworld!
-    NOT_STORED 
 
 #### Cas
 
-    cas key 0 1200 9 1 noreply
+    cas key 0 1200 9 1
     memcached
     STORED        
 

@@ -18,8 +18,9 @@ const isCommand = (command) => {
 };
 
 const validateRequestSyntax = (command, options, expectedData) => {
+  const noreply = expectedData ? expectedData[5] : undefined;
   if (isCommand(command) && options.length === 0) throw new NoOptionsError();
-  if (isCommand(command) && expectedData) throw new DataExpectedError();
+  if (isCommand(command) && expectedData) throw new DataExpectedError(noreply);
   if (!isCommand(command) && !expectedData) throw new InvalidCommandError();
 };
 
