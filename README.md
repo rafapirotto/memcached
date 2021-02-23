@@ -95,6 +95,8 @@ and one of the following in case of failure:
 
 * `NOT_FOUND\r\n`
 
+* `EXISTS\r\n`
+
 * `ERROR\r\n`
 
 * `CLIENT_ERROR bad data chunk\r\nERROR\r\n`
