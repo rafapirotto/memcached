@@ -8,7 +8,7 @@ const { handleErrors } = require('../domain/errors/handleErrors');
 const { build } = require('../domain/builder');
 
 const DEFAULT_PORT = 11211;
-const DEFAULT_IP = '0.0.0.0';
+const DEFAULT_IP = 'localhost';
 const DEFAULT_MAX_CONNECTIONS = 5;
 const PORT = process.env.PORT || DEFAULT_PORT;
 const IP = process.env.IP || DEFAULT_IP;
@@ -33,8 +33,20 @@ const start = () => {
     });
   });
 
+  const listen = () => {
+    server.listen(PORT, IP, () => {
+      console.log(`Server listening at ${IP}:${PORT}`);
+    });
+  };
+
   server.on('error', (err) => {
-    console.log(`Error: ${err}`);
+    if (err.code === 'EADDRINUSE') {
+      console.log('Address in use, retrying...');
+      setTimeout(() => {
+        server.close();
+        listen();
+      }, 1000);
+    } else console.log(`Error: ${err}`);
   });
 
   server.on('connection', (socket) => {
@@ -46,9 +58,7 @@ const start = () => {
     });
   });
 
-  server.listen(PORT, IP, () => {
-    console.log(`Server listening at ${IP}:${PORT}`);
-  });
+  listen();
 };
 
 module.exports = { start };
