@@ -11,7 +11,7 @@ const { WRONG_EXCEPTION_THROWN, EXPECTED_EXCEPTION_NOT_THROWN } = require('../..
 const key = 'new_key';
 const flags = '0';
 const exptime = '3600';
-const bytes = '2';
+const bytes = 2;
 const noreply = 'noreply';
 
 const getStorageCommandInstance = (command, expectedData, request = null) => {
@@ -71,5 +71,14 @@ describe('validateDataBlock()', () => {
         });
       });
     });
+  });
+});
+describe('execute()', () => {
+  it('should return undefined', () => {
+    const expectedData = getExpectedDataWithNoReply();
+    const command = getDataBlockCommandInstance(['22'], expectedData);
+    const { result: actual } = command.execute();
+    const expected = undefined;
+    assert.strictEqual(actual, expected);
   });
 });

@@ -2,11 +2,12 @@ const { assert } = require('chai');
 const { Cas, Set } = require('../../../../domain/commands');
 const { EMPTY_SPACE } = require('../../../../domain/constants/index');
 const {
-  STORED, NOT_FOUND, EXISTS, ERROR_MESSAGE,
+  STORED, NOT_FOUND, EXISTS, ERROR_MESSAGE, BAD_COMMAND_LINE_FORMAT,
 } = require('../../../../domain/constants/messages');
 const store = require('../../../../store/Store');
 const { EXPECTED_EXCEPTION_NOT_THROWN, WRONG_EXCEPTION_THROWN } = require('../../../utils');
 const { WrongArgumentNumberError } = require('../../../../domain/errors/syntax');
+const { BadCommandLineFormatError } = require('../../../../domain/errors/badCommandLine');
 
 const testObj1 = {
   key: 'existing_key',
@@ -289,38 +290,87 @@ describe('cas', () => {
     });
   });
   describe('validateNumberOptions()', () => {
-    before(() => {
-      store.initialize();
-    });
-    const options = ['key', '1', '2', '3', '4', 'noreply'];
-    const cas = new Cas(options, store);
-    cas.validateNumberOptions();
-    describe('flags', () => {
-      it('should return number 1', () => {
-        const actual = cas.options[1];
-        const expected = 1;
-        assert.strictEqual(actual, expected);
+    describe('correct values', () => {
+      before(() => {
+        store.initialize();
+      });
+      const options = ['key', '1', '2', '3', '4', 'noreply'];
+      const cas = new Cas(options, store);
+      cas.validateNumberOptions();
+      describe('flags', () => {
+        it('should return number 1', () => {
+          const actual = cas.options[1];
+          const expected = 1;
+          assert.strictEqual(actual, expected);
+        });
+      });
+      describe('exptime', () => {
+        it('should return number 2', () => {
+          const actual = cas.options[2];
+          const expected = 2;
+          assert.strictEqual(actual, expected);
+        });
+      });
+      describe('bytes', () => {
+        it('should return number 3', () => {
+          const actual = cas.options[3];
+          const expected = 3;
+          assert.strictEqual(actual, expected);
+        });
+      });
+      describe('cas', () => {
+        it('should return number 4', () => {
+          const actual = cas.options[4];
+          const expected = 4;
+          assert.strictEqual(actual, expected);
+        });
       });
     });
-    describe('exptime', () => {
-      it('should return number 2', () => {
-        const actual = cas.options[2];
-        const expected = 2;
-        assert.strictEqual(actual, expected);
+    describe('wrong values', () => {
+      before(() => {
+        store.initialize();
       });
-    });
-    describe('bytes', () => {
-      it('should return number 3', () => {
-        const actual = cas.options[3];
-        const expected = 3;
-        assert.strictEqual(actual, expected);
+      describe('flags', () => {
+        it('should throw an instance of BadCommandLineFormatError', () => {
+          const options = ['key', '1.0', '2', '3', '4', 'noreply'];
+          const cas = new Cas(options, store);
+          try {
+            cas.validateNumberOptions();
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof BadCommandLineFormatError) {
+              assert.strictEqual(e.message, BAD_COMMAND_LINE_FORMAT);
+            } else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
       });
-    });
-    describe('cas', () => {
-      it('should return number 4', () => {
-        const actual = cas.options[4];
-        const expected = 4;
-        assert.strictEqual(actual, expected);
+      describe('exptime', () => {
+        it('should throw an instance of BadCommandLineFormatError', () => {
+          const options = ['key', '1', 'two', '3', '4', 'noreply'];
+          const cas = new Cas(options, store);
+          try {
+            cas.validateNumberOptions();
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof BadCommandLineFormatError) {
+              assert.strictEqual(e.message, BAD_COMMAND_LINE_FORMAT);
+            } else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
+      });
+      describe('exptime', () => {
+        it('should throw an instance of BadCommandLineFormatError', () => {
+          const options = ['key', '1', '2', '-3', '4', 'noreply'];
+          const cas = new Cas(options, store);
+          try {
+            cas.validateNumberOptions();
+            assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+          } catch (e) {
+            if (e instanceof BadCommandLineFormatError) {
+              assert.strictEqual(e.message, BAD_COMMAND_LINE_FORMAT);
+            } else assert.fail(WRONG_EXCEPTION_THROWN);
+          }
+        });
       });
     });
   });
@@ -373,6 +423,18 @@ describe('cas', () => {
           else assert.fail(WRONG_EXCEPTION_THROWN);
         }
       });
+    });
+  });
+  describe('convertDataToObject()', () => {
+    it('convertDataToObject()', () => {
+      const {
+        key, flags, exptime, bytes, noreply,
+      } = testObj1;
+      const expectedArray = ['cas', key, flags, exptime, bytes, noreply];
+      const cas = new Cas(null, store);
+      const actual = Object.keys(cas.convertDataToObject(expectedArray)).length;
+      const expected = 7;
+      assert.strictEqual(actual, expected);
     });
   });
 });

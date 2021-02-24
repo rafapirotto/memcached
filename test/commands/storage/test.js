@@ -5,7 +5,7 @@ const { parse } = require('../../../parser/parser');
 const { create } = require('../../../factory/commandFactory');
 const Connection = require('../../../tcp/Connection');
 const { TERMINATOR, EMPTY_SPACE } = require('../../../domain/constants/index');
-const { Add } = require('../../../domain/commands');
+const { Add, Append } = require('../../../domain/commands');
 const DummySocket = require('../../utils/DummySocket/DummySocket');
 const { WRONG_EXCEPTION_THROWN, EXPECTED_EXCEPTION_NOT_THROWN } = require('../../utils');
 const { WrongArgumentNumberError } = require('../../../domain/errors/syntax');
@@ -46,10 +46,9 @@ describe('storage', () => {
   });
   describe('execute()', () => {
     describe('normal flow', () => {
-      // 'add' is used as an example, but any storage command should behave in the same way
       describe('correct response', () => {
         it('should return an empty space', () => {
-          const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
+          const result = getResult(`prepend ${key} ${flags} ${exptime} ${bytes}`);
           const actual = result.response;
           const expected = EMPTY_SPACE;
           assert.strictEqual(actual, expected);
@@ -65,9 +64,9 @@ describe('storage', () => {
       });
       describe('correct data content', () => {
         describe('command', () => {
-          it('should return an instance of the Add command', () => {
-            const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
-            const actual = result.data[0] instanceof Add;
+          it('should return an instance of the Append command', () => {
+            const result = getResult(`append ${key} ${flags} ${exptime} ${bytes}`);
+            const actual = result.data[0] instanceof Append;
             const expected = true;
             assert.strictEqual(actual, expected);
           });
@@ -110,7 +109,7 @@ describe('storage', () => {
       describe('wrong number of arguments', () => {
         describe('more than required', () => {
           it('should throw an instance of WrongArgumentNumberError', () => {
-            const dataString = `add ${key} ${flags} ${exptime} ${bytes} other args`;
+            const dataString = `cas ${key} ${flags} ${exptime} ${bytes} other args args`;
             const command = getCommandInstance(dataString);
             try {
               command.execute();
@@ -141,7 +140,7 @@ describe('storage', () => {
         describe('negative arguments', () => {
           describe('flags', () => {
             it('should throw an instance of BadCommandLineFormatError', () => {
-              const dataString = `add ${key} -1 ${exptime} ${bytes}`;
+              const dataString = `replace ${key} -1 ${exptime} ${bytes}`;
               const command = getCommandInstance(dataString);
               try {
                 command.execute();

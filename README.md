@@ -47,6 +47,13 @@ Memcached is an open source, high-performance, distributed memory object caching
 
       npm test
 
+### Run code coverage 
+
+* Open terminal
+* Go to project location
+* Run the following command:
+
+      npm run coverage
 ## Supported commands
 ### Storage
 

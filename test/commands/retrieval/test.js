@@ -52,7 +52,6 @@ describe('retrieval', () => {
   describe('execute()', () => {
     describe('normal flow', () => {
       describe('get existent key', () => {
-        // 'get' is used as an example, but any retrieval command should behave in the same way
         before(() => {
           store.insert(testObj);
         });
@@ -66,7 +65,7 @@ describe('retrieval', () => {
         });
         describe('correct result', () => {
           it('should return undefined', () => {
-            const result = getResult(`get ${testObj.key}`);
+            const result = getResult(`gets ${testObj.key}`);
             const actual = result.result;
             const expected = undefined;
             assert.strictEqual(actual, expected);

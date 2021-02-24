@@ -2,7 +2,7 @@ const { assert } = require('chai');
 
 const { create } = require('../../factory/commandFactory');
 const {
-  Set, Add, Replace, Append, Prepend, Get, Gets, DataBlock,
+  Set, Add, Replace, Append, Prepend, Get, Gets, DataBlock, Cas,
 } = require('../../domain/commands');
 const store = require('../../store/Store');
 const { NoOptionsError, InvalidCommandError } = require('../../domain/errors/syntax');
@@ -92,6 +92,14 @@ describe('commandFactory', () => {
           it('should return an instance of the Prepend command', () => {
             const command = getStorageCommandInstance('prepend', null);
             const actual = command instanceof Prepend;
+            const expected = true;
+            assert.strictEqual(actual, expected);
+          });
+        });
+        describe('Cas', () => {
+          it('should return an instance of the Cas command', () => {
+            const command = getStorageCommandInstance('cas', null);
+            const actual = command instanceof Cas;
             const expected = true;
             assert.strictEqual(actual, expected);
           });
