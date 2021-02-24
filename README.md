@@ -14,7 +14,7 @@ Memcached is an open source, high-performance, distributed memory object caching
 ## Instructions
 ### Run server
 
-**The server runs in the 1337 port by default**
+**The server runs in the 11211 port by default**
 
 * Download [zip file](https://github.com/rafapirotto/memcached/archive/master.zip)
 

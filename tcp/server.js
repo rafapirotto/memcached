@@ -7,7 +7,7 @@ const Connection = require('./Connection');
 const { handleErrors } = require('../domain/errors/handleErrors');
 const { build } = require('../domain/builder');
 
-const DEFAULT_PORT = 1337;
+const DEFAULT_PORT = 11211;
 const DEFAULT_IP = '0.0.0.0';
 const DEFAULT_MAX_CONNECTIONS = 5;
 const PORT = process.env.PORT || DEFAULT_PORT;
