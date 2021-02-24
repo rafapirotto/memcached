@@ -35,12 +35,12 @@ class Storage {
     return EMPTY_SPACE;
   }
 
-  validateOptions() {
+  validateOptionsLength() {
     if (this.options.length !== 4) throw new WrongArgumentNumberError();
   }
 
   execute() {
-    this.validateOptions();
+    this.validateOptionsLength();
     this.validateNumberOptions();
     this.options.splice(0, 0, this);
     return { response: this.getOutput(), data: this.options };

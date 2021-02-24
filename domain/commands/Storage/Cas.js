@@ -30,7 +30,7 @@ class Cas extends Storage {
     }
   }
 
-  validateOptions() {
+  validateOptionsLength() {
     if (this.options.length !== 5) throw new WrongArgumentNumberError();
   }
 

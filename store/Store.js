@@ -31,16 +31,19 @@ class Store {
   }
 
   insert(obj) {
-    this.deleteUnusedProps(obj);
-    obj.cas = this.nextCas();
-    if (obj.exptime >= 0) this.store.push(obj);
+    // we use this syntax to avoid side effects
+    const objCopy = { ...obj };
+    this.deleteUnusedProps(objCopy);
+    objCopy.cas = this.nextCas();
+    if (obj.exptime >= 0) this.store.push(objCopy);
   }
 
   update(obj) {
+    const objCopy = { ...obj };
     const { index } = this.customFind(obj.key);
-    this.deleteUnusedProps(obj);
-    obj.cas = this.nextCas();
-    this.store[index] = obj;
+    this.deleteUnusedProps(objCopy);
+    objCopy.cas = this.nextCas();
+    this.store[index] = objCopy;
   }
 }
 
