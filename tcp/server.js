@@ -20,7 +20,7 @@ const start = () => {
     socket.on('data', (data) => {
       const connection = new Connection(socket, data);
       const errorCallback = (message) => {
-        socket.expectedData = null;
+        connection.setExpectedData(null);
         connection.sendResponse(message);
       };
       handleErrors(() => { build(connection, store); }, errorCallback);

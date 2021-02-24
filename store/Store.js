@@ -8,11 +8,6 @@ class Store {
     this.cas = 1;
   }
 
-  deleteUnusedProps(obj) {
-    delete obj.noreply;
-    delete obj.commandInstance;
-  }
-
   customFind(key) {
     const NOT_FOUND_INDEX = -1;
     const index = this.store.findIndex((obj) => key === obj.key);
@@ -26,22 +21,29 @@ class Store {
     return false;
   }
 
+  deleteUnusedProps(obj) {
+    const objCopy = { ...obj };
+    delete objCopy.noreply;
+    delete objCopy.commandInstance;
+    return objCopy;
+  }
+
   nextCas() {
     return this.cas++;
   }
 
   insert(obj) {
     // we use this syntax to avoid side effects
-    const objCopy = { ...obj };
-    this.deleteUnusedProps(objCopy);
+    let objCopy = { ...obj };
+    objCopy = this.deleteUnusedProps(objCopy);
     objCopy.cas = this.nextCas();
     if (obj.exptime >= 0) this.store.push(objCopy);
   }
 
   update(obj) {
-    const objCopy = { ...obj };
+    let objCopy = { ...obj };
     const { index } = this.customFind(obj.key);
-    this.deleteUnusedProps(objCopy);
+    objCopy = this.deleteUnusedProps(objCopy);
     objCopy.cas = this.nextCas();
     this.store[index] = objCopy;
   }
