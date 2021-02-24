@@ -1,6 +1,4 @@
-const {
-  BAD_DATA_CHUNK, ERROR_MESSAGE,
-} = require('../../constants/messages');
+const { BAD_DATA_CHUNK, ERROR_MESSAGE } = require('../../constants/messages');
 const ClientError = require('../ClientError');
 
 class BadDataChunkError extends ClientError {
@@ -9,4 +7,5 @@ class BadDataChunkError extends ClientError {
     else super(BAD_DATA_CHUNK);
   }
 }
+
 module.exports = BadDataChunkError;

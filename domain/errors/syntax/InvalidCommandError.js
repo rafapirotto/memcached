@@ -5,4 +5,5 @@ class InvalidCommandError extends SyntaxError {
     super();
   }
 }
+
 module.exports = InvalidCommandError;

@@ -12,9 +12,7 @@ class Append extends Storage {
   }
 
   doStoreOperation(objToExecute) {
-    const {
-      noreply,
-    } = objToExecute;
+    const { noreply } = objToExecute;
     const obj = super.getStore().find(objToExecute.key);
     if (obj) {
       obj.bytes += objToExecute.bytes;

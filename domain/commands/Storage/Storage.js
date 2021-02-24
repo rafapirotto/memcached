@@ -18,15 +18,25 @@ class Storage {
     return this.store;
   }
 
-  validateNumberOptions() {
+  convertToNumber(string) {
+    return Number(string);
+  }
+
+  isInvalidOption(index) {
+    const option = this.options[index];
+    const optionAsInt = this.convertToNumber(option);
     const exptimeIndex = 2;
+    return Number.isNaN(optionAsInt)
+      || this.isFloat(option)
+      || (optionAsInt < 0 && exptimeIndex !== index);
+  }
+
+  validateNumberOptions() {
     for (let index = 1; index < 4; index++) {
       const option = this.options[index];
       const optionAsInt = Number(option);
-      const notValid = Number.isNaN(optionAsInt)
-      || this.isFloat(option)
-      || (optionAsInt < 0 && exptimeIndex !== index);
-      if (notValid) throw new BadCommandLineFormatError();
+      const isInvalid = this.isInvalidOption(index);
+      if (isInvalid) throw new BadCommandLineFormatError();
       this.options[index] = optionAsInt;
     }
   }
@@ -36,8 +46,8 @@ class Storage {
   }
 
   validateOptionsLength() {
-    const options = this.options.length;
-    if (options < 4 || options > 5) throw new WrongArgumentNumberError();
+    const optionNumber = this.options.length;
+    if (optionNumber < 4 || optionNumber > 5) throw new WrongArgumentNumberError();
   }
 
   execute() {

@@ -12,9 +12,7 @@ class Set extends Storage {
   }
 
   doStoreOperation(objToExecute) {
-    const {
-      key, noreply,
-    } = objToExecute;
+    const { key, noreply } = objToExecute;
     const { found } = super.getStore().customFind(key);
     if (found) super.getStore().update(objToExecute);
     else super.getStore().insert(objToExecute);

@@ -14,4 +14,5 @@ const parse = (bufferRequest) => {
   if (stringRequest.length !== 0) parsedRequest = parseArgsStringToArgv(stringRequest);
   return parsedRequest;
 };
+
 module.exports = { parse };

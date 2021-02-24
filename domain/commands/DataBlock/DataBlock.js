@@ -13,9 +13,7 @@ class DataBlock {
   validateDataBlock() {
     // byteLength -> returns the number of bytes required to store a string
     const { bytes, noreply } = this.expectedData;
-    if (Buffer.byteLength(this.data) !== bytes) {
-      throw new WrongByteLengthError(noreply);
-    }
+    if (Buffer.byteLength(this.data) !== bytes) throw new WrongByteLengthError(noreply);
   }
 
   execute() {

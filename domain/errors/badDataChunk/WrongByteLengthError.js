@@ -5,4 +5,5 @@ class WrongByteLengthError extends BadDataChunkError {
     super(noreply);
   }
 }
+
 module.exports = WrongByteLengthError;

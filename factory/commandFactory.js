@@ -1,9 +1,7 @@
 const {
   Get, Gets, Set, DataBlock, Add, Replace, Prepend, Append, Cas,
 } = require('../domain/commands/index');
-const {
-  DataExpectedError,
-} = require('../domain/errors/badDataChunk');
+const { DataExpectedError } = require('../domain/errors/badDataChunk');
 const { NoOptionsError, InvalidCommandError } = require('../domain/errors/syntax');
 
 const { COMMANDS } = require('../domain/constants');

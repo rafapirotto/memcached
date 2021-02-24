@@ -5,4 +5,5 @@ class WrongArgumentNumberError extends SyntaxError {
     super();
   }
 }
+
 module.exports = WrongArgumentNumberError;

@@ -1,6 +1,4 @@
-const {
-  ERROR_MESSAGE,
-} = require('../../constants/messages');
+const { ERROR_MESSAGE } = require('../../constants/messages');
 const ClientError = require('../ClientError');
 
 class SyntaxError extends ClientError {
@@ -8,4 +6,5 @@ class SyntaxError extends ClientError {
     super(ERROR_MESSAGE);
   }
 }
+
 module.exports = SyntaxError;

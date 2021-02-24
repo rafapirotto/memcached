@@ -17,28 +17,35 @@ class Cas extends Storage {
     return super.execute();
   }
 
-  validateNumberOptions() {
+  convertToNumber(string) {
+    return Number(string);
+  }
+
+  isInvalidOption(index) {
+    const option = this.options[index];
+    const optionAsInt = this.convertToNumber(option);
     const exptimeIndex = 2;
-    for (let index = 1; index < 5; index++) {
-      const option = this.options[index];
-      const optionAsInt = Number(option);
-      const notValid = Number.isNaN(optionAsInt)
+    return Number.isNaN(optionAsInt)
       || this.isFloat(option)
       || (optionAsInt < 0 && exptimeIndex !== index);
-      if (notValid) throw new BadCommandLineFormatError();
-      this.options[index] = optionAsInt;
+  }
+
+  validateNumberOptions() {
+    for (let index = 1; index < 5; index++) {
+      const isInvalid = this.isInvalidOption(index);
+      if (isInvalid) throw new BadCommandLineFormatError();
+      const option = this.options[index];
+      this.options[index] = this.convertToNumber(option);
     }
   }
 
   validateOptionsLength() {
-    const options = this.options.length;
-    if (options < 5 || options > 6) throw new WrongArgumentNumberError();
+    const optionNumber = this.options.length;
+    if (optionNumber < 5 || optionNumber > 6) throw new WrongArgumentNumberError();
   }
 
   doStoreOperation(objToExecute) {
-    const {
-      noreply,
-    } = objToExecute;
+    const { noreply } = objToExecute;
     const retrievedObj = super.getStore().find(objToExecute.key);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     if (!retrievedObj) return NOT_FOUND;

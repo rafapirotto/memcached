@@ -5,4 +5,5 @@ class BadCommandLineFormatError extends BadCommandLineError {
     super();
   }
 }
+
 module.exports = BadCommandLineFormatError;

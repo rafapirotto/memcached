@@ -1,6 +1,4 @@
-const {
-  BAD_COMMAND_LINE_FORMAT,
-} = require('../../constants/messages');
+const { BAD_COMMAND_LINE_FORMAT } = require('../../constants/messages');
 const ClientError = require('../ClientError');
 
 class BadCommandLineError extends ClientError {
@@ -8,4 +6,5 @@ class BadCommandLineError extends ClientError {
     super(BAD_COMMAND_LINE_FORMAT);
   }
 }
+
 module.exports = BadCommandLineError;

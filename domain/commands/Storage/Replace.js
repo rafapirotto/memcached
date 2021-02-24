@@ -12,9 +12,7 @@ class Replace extends Storage {
   }
 
   doStoreOperation(objToExecute) {
-    const {
-      noreply,
-    } = objToExecute;
+    const { noreply } = objToExecute;
     const { found } = super.getStore().customFind(objToExecute.key);
     if (found) super.getStore().update(objToExecute);
     if (noreply === NO_REPLY) return EMPTY_SPACE;

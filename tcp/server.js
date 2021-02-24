@@ -4,8 +4,9 @@ require('dotenv').config();
 
 const store = require('../store/Store');
 const Connection = require('./Connection');
-const { handleErrors } = require('../domain/errors/handleErrors');
 const { build } = require('../domain/builder');
+const ClientError = require('../domain/errors/ClientError');
+const { SERVER_ERROR } = require('../domain/constants/messages');
 
 const DEFAULT_PORT = 11211;
 const DEFAULT_IP = 'localhost';
@@ -13,6 +14,16 @@ const DEFAULT_MAX_CONNECTIONS = 5;
 const PORT = process.env.PORT || DEFAULT_PORT;
 const IP = process.env.IP || DEFAULT_IP;
 const MAX_CONNECTIONS = process.env.MAX_CONNECTIONS || DEFAULT_MAX_CONNECTIONS;
+
+const handleData = (callback, errorCallback) => {
+  try {
+    callback();
+  } catch (error) {
+    const isClientError = error instanceof ClientError;
+    const message = isClientError ? error.message : SERVER_ERROR;
+    errorCallback(message);
+  }
+};
 
 const start = () => {
   const server = net.createServer((socket) => {
@@ -23,13 +34,11 @@ const start = () => {
         connection.setExpectedData(null);
         connection.sendResponse(message);
       };
-      handleErrors(() => { build(connection, store); }, errorCallback);
+      handleData(() => { build(connection, store); }, errorCallback);
     });
 
     socket.on('close', (data) => {
-      console.log(
-        `Client disconnected: ${socket.remoteAddress}:${socket.remotePort}`,
-      );
+      console.log(`Client disconnected: ${socket.remoteAddress}:${socket.remotePort}`);
     });
   });
 
@@ -41,18 +50,16 @@ const start = () => {
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.log('Address in use, retrying...');
+      console.log('Address in use, retrying in 5 seconds...');
       setTimeout(() => {
         server.close();
         listen();
-      }, 1000);
+      }, 5000);
     } else console.log(`Error: ${err}`);
   });
 
   server.on('connection', (socket) => {
-    console.log(
-      `Client connected: ${socket.remoteAddress}:${socket.remotePort}`,
-    );
+    console.log(`Client connected: ${socket.remoteAddress}:${socket.remotePort}`);
     server.getConnections((error, count) => {
       console.log(`Concurrent connections to the server: ${count}`);
     });

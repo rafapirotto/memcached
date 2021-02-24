@@ -248,6 +248,12 @@ describe('store', () => {
         const expected = testObj3.value;
         assert.strictEqual(actual, expected);
       });
+      it('should have deleted the object', () => {
+        store.update({ ...testObj3, exptime: -2 });
+        const actual = store.find(testObj3.key);
+        const expected = false;
+        assert.strictEqual(actual, expected);
+      });
     });
   });
   describe('delete()', () => {

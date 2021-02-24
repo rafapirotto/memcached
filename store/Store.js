@@ -23,8 +23,8 @@ class Store {
     const { exptime, lastUpdated } = obj;
     if (exptime === 0) return false;
     const now = new Date();
-    const diff = (now.getTime() - lastUpdated.getTime()) / 1000;
-    return (diff >= exptime);
+    const diffInSeconds = (now.getTime() - lastUpdated.getTime()) / 1000;
+    return (diffInSeconds >= exptime);
   }
 
   find(key) {
@@ -41,6 +41,7 @@ class Store {
   }
 
   deleteUnusedProps(obj) {
+    // this syntax is used to avoid side effects
     const objCopy = { ...obj };
     delete objCopy.noreply;
     delete objCopy.commandInstance;
@@ -52,21 +53,20 @@ class Store {
   }
 
   insert(obj) {
-    // we use this syntax to avoid side effects
-    let objCopy = { ...obj };
-    objCopy = this.deleteUnusedProps(objCopy);
-    objCopy.cas = this.nextCas();
-    objCopy.lastUpdated = new Date();
-    if (obj.exptime >= 0) this.store.push(objCopy);
+    const newObj = this.deleteUnusedProps(obj);
+    newObj.cas = this.nextCas();
+    newObj.lastUpdated = new Date();
+    if (obj.exptime >= 0) this.store.push(newObj);
   }
 
   update(obj) {
-    let objCopy = { ...obj };
     const { index } = this.customFind(obj.key);
-    objCopy = this.deleteUnusedProps(objCopy);
-    objCopy.cas = this.nextCas();
-    objCopy.lastUpdated = new Date();
-    this.store[index] = objCopy;
+    if (obj.exptime >= 0) {
+      const objCopy = { ...obj };
+      objCopy.cas = this.nextCas();
+      objCopy.lastUpdated = new Date();
+      this.store[index] = objCopy;
+    } else this.delete(index);
   }
 }
 

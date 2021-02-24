@@ -3,4 +3,5 @@ class ClientError extends Error {
     super(message);
   }
 }
+
 module.exports = ClientError;

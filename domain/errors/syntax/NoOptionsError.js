@@ -5,4 +5,5 @@ class NoOptionsError extends SyntaxError {
     super();
   }
 }
+
 module.exports = NoOptionsError;

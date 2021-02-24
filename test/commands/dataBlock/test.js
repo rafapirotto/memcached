@@ -7,6 +7,7 @@ const {
   ERROR_MESSAGE, BAD_DATA_CHUNK,
 } = require('../../../domain/constants/messages');
 const { WRONG_EXCEPTION_THROWN, EXPECTED_EXCEPTION_NOT_THROWN } = require('../../utils');
+const { EMPTY_SPACE } = require('../../../domain/constants');
 
 const key = 'new_key';
 const flags = '0';
@@ -74,11 +75,11 @@ describe('validateDataBlock()', () => {
   });
 });
 describe('execute()', () => {
-  it('should return undefined', () => {
+  it(`should return '${EMPTY_SPACE}'`, () => {
     const expectedData = getExpectedDataWithNoReply();
     const command = getDataBlockCommandInstance(['22'], expectedData);
-    const { result: actual } = command.execute();
-    const expected = undefined;
+    const { response: actual } = command.execute();
+    const expected = EMPTY_SPACE;
     assert.strictEqual(actual, expected);
   });
 });
