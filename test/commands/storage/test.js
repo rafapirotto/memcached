@@ -269,4 +269,81 @@ describe('storage', () => {
       });
     });
   });
+  describe('validateNumberOptions()', () => {
+    const options = ['key', '1', '2', '3', 'noreply'];
+    const add = new Add(options, store);
+    add.validateNumberOptions();
+    describe('flags', () => {
+      it('should return number 1', () => {
+        const actual = add.options[1];
+        const expected = 1;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('exptime', () => {
+      it('should return number 2', () => {
+        const actual = add.options[2];
+        const expected = 2;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('bytes', () => {
+      it('should return number 3', () => {
+        const actual = add.options[3];
+        const expected = 3;
+        assert.strictEqual(actual, expected);
+      });
+    });
+  });
+  describe('validateOptionsLength()', () => {
+    before(() => {
+      store.initialize();
+    });
+    describe('correct length 1', () => {
+      const options = ['key', '1', '2', '3', 'noreply'];
+      const add = new Add(options, store);
+      add.validateOptionsLength();
+      it('should return number 6', () => {
+        const actual = add.options.length;
+        const expected = 5;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('correct length 2', () => {
+      const options = ['key', '1', '2', '3'];
+      const add = new Add(options, store);
+      add.validateOptionsLength();
+      it('should return number 5', () => {
+        const actual = add.options.length;
+        const expected = 4;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('more options than  required', () => {
+      it('should throw an instance of WrongArgumentNumberError', () => {
+        const options = ['key', '1', '2', '3', '4', '6', 'noreply'];
+        const add = new Add(options, store);
+        try {
+          add.validateOptionsLength();
+          assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+        } catch (e) {
+          if (e instanceof WrongArgumentNumberError) assert.strictEqual(e.message, ERROR_MESSAGE);
+          else assert.fail(WRONG_EXCEPTION_THROWN);
+        }
+      });
+    });
+    describe('less options than  required', () => {
+      it('should throw an instance of WrongArgumentNumberError', () => {
+        const options = ['key', '1', 'noreply'];
+        const add = new Add(options, store);
+        try {
+          add.validateOptionsLength();
+          assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+        } catch (e) {
+          if (e instanceof WrongArgumentNumberError) assert.strictEqual(e.message, ERROR_MESSAGE);
+          else assert.fail(WRONG_EXCEPTION_THROWN);
+        }
+      });
+    });
+  });
 });

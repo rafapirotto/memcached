@@ -29,7 +29,7 @@ const getOutput = (keys) => {
 
 describe('get', () => {
   /*
-  only toString and getOutput methods are tested
+  only toString() and getOutput() methods are tested
   reason: execute() was already tested in the retrieval command tests
   because it just calls the superclass method
   */

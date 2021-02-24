@@ -36,7 +36,8 @@ class Storage {
   }
 
   validateOptionsLength() {
-    if (this.options.length !== 4) throw new WrongArgumentNumberError();
+    const options = this.options.length;
+    if (options < 4 || options > 5) throw new WrongArgumentNumberError();
   }
 
   execute() {

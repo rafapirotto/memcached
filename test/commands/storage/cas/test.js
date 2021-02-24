@@ -1,8 +1,12 @@
 const { assert } = require('chai');
 const { Cas, Set } = require('../../../../domain/commands');
 const { EMPTY_SPACE } = require('../../../../domain/constants/index');
-const { STORED, NOT_FOUND, EXISTS } = require('../../../../domain/constants/messages');
+const {
+  STORED, NOT_FOUND, EXISTS, ERROR_MESSAGE,
+} = require('../../../../domain/constants/messages');
 const store = require('../../../../store/Store');
+const { EXPECTED_EXCEPTION_NOT_THROWN, WRONG_EXCEPTION_THROWN } = require('../../../utils');
+const { WrongArgumentNumberError } = require('../../../../domain/errors/syntax');
 
 const testObj1 = {
   key: 'existing_key',
@@ -31,8 +35,8 @@ const testObj3 = {
 
 describe('cas', () => {
   /*
-  only doStoreOperation method is tested
-  reason: execute() was already tested in the storage command tests
+  execute() method not tested
+  reason: was already tested in the storage command tests
   because it just calls the superclass method
   */
   after(() => {
@@ -281,6 +285,93 @@ describe('cas', () => {
             assert.strictEqual(actual, expected);
           });
         });
+      });
+    });
+  });
+  describe('validateNumberOptions()', () => {
+    before(() => {
+      store.initialize();
+    });
+    const options = ['key', '1', '2', '3', '4', 'noreply'];
+    const cas = new Cas(options, store);
+    cas.validateNumberOptions();
+    describe('flags', () => {
+      it('should return number 1', () => {
+        const actual = cas.options[1];
+        const expected = 1;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('exptime', () => {
+      it('should return number 2', () => {
+        const actual = cas.options[2];
+        const expected = 2;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('bytes', () => {
+      it('should return number 3', () => {
+        const actual = cas.options[3];
+        const expected = 3;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('cas', () => {
+      it('should return number 4', () => {
+        const actual = cas.options[4];
+        const expected = 4;
+        assert.strictEqual(actual, expected);
+      });
+    });
+  });
+  describe('validateOptionsLength()', () => {
+    before(() => {
+      store.initialize();
+    });
+    describe('correct length 1', () => {
+      const options = ['key', '1', '2', '3', '4', 'noreply'];
+      const cas = new Cas(options, store);
+      cas.validateOptionsLength();
+      it('should return number 6', () => {
+        const actual = cas.options.length;
+        const expected = 6;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('correct length 2', () => {
+      const options = ['key', '1', '2', '3', '4'];
+      const cas = new Cas(options, store);
+      cas.validateOptionsLength();
+      it('should return number 5', () => {
+        const actual = cas.options.length;
+        const expected = 5;
+        assert.strictEqual(actual, expected);
+      });
+    });
+    describe('more options than  required', () => {
+      it('should throw an instance of WrongArgumentNumberError', () => {
+        const options = ['key', '1', '2', '3', '4', '6', 'noreply'];
+        const cas = new Cas(options, store);
+        try {
+          cas.validateOptionsLength();
+          assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+        } catch (e) {
+          if (e instanceof WrongArgumentNumberError) assert.strictEqual(e.message, ERROR_MESSAGE);
+          else assert.fail(WRONG_EXCEPTION_THROWN);
+        }
+      });
+    });
+    describe('less options than  required', () => {
+      it('should throw an instance of WrongArgumentNumberError', () => {
+        const options = ['key', '1', '4', 'noreply'];
+        const cas = new Cas(options, store);
+        try {
+          cas.validateOptionsLength();
+          assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
+        } catch (e) {
+          if (e instanceof WrongArgumentNumberError) assert.strictEqual(e.message, ERROR_MESSAGE);
+          else assert.fail(WRONG_EXCEPTION_THROWN);
+        }
       });
     });
   });

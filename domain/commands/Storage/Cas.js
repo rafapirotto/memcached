@@ -31,7 +31,8 @@ class Cas extends Storage {
   }
 
   validateOptionsLength() {
-    if (this.options.length !== 5) throw new WrongArgumentNumberError();
+    const options = this.options.length;
+    if (options < 5 || options > 6) throw new WrongArgumentNumberError();
   }
 
   doStoreOperation(objToExecute) {

@@ -21,7 +21,7 @@ const testObj2 = {
 
 describe('set', () => {
   /*
-  only doStoreOperation method is tested
+  only doStoreOperation() method is tested
   reason: execute() was already tested in the storage command tests
   because it just calls the superclass method
   */
