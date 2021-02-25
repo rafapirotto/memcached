@@ -45,9 +45,13 @@ class Storage {
     return EMPTY_SPACE;
   }
 
-  validateOptionsLength() {
+  optionsLengthIsInvalid() {
     const optionNumber = this.options.length;
-    if (optionNumber < 4 || optionNumber > 5) throw new WrongArgumentNumberError();
+    return optionNumber < 4 || optionNumber > 5;
+  }
+
+  validateOptionsLength() {
+    if (this.optionsLengthIsInvalid()) throw new WrongArgumentNumberError();
   }
 
   execute() {
