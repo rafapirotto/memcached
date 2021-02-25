@@ -1,11 +1,12 @@
 ![Build status](https://github.com/rafapirotto/memcached/actions/workflows/node.js.yml/badge.svg)
+![code size](https://img.shields.io/github/languages/code-size/rafapirotto/memcached)
 
 
 # memcached server
 
 Memcached is an open source, high-performance, distributed memory object caching system. For more information check out the official memcached [github repository](https://github.com/memcached/memcached).
 
-## Index
+## Contents
 1. [Instructions](#instructions)
 2. [Supported commands](#supported-commands)
 3. [Usage](#usage)
