@@ -14,7 +14,6 @@ const secondFlags = 0;
 const secondExptime = -4;
 const secondBytes = 2;
 const secondValue = '22';
-const noreply = 'noreply';
 
 const thirdTestKey = firstTestKey;
 const thirdFlags = 2;
@@ -23,11 +22,7 @@ const thirdBytes = 4;
 const thirdValue = '4444';
 
 const firstOptions = [firstTestKey, firstFlags, firstExptime, firstBytes];
-const firstOptionsWithNoReply = firstOptions.concat([noreply]);
 const secondOptions = [secondTestKey, secondFlags, secondExptime, secondBytes];
-const secondOptionsWithNoReply = secondOptions.concat([noreply]);
-const thirdOptions = [thirdTestKey, thirdFlags, thirdExptime, thirdBytes];
-const thirdOptionsWithNoReply = secondOptions.concat([noreply]);
 
 const testObj1 = {
   key: 'existing_key',
