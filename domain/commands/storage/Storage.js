@@ -6,7 +6,15 @@ const { EMPTY_SPACE } = require('../../constants/index');
 
 class Storage {
   constructor(options) {
+    this.setOptions(options);
+  }
+
+  setOptions(options) {
     this.options = options;
+  }
+
+  getOptions() {
+    return this.options;
   }
 
   isFloat(numberAsString) {

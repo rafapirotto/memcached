@@ -3,6 +3,7 @@ const {
 } = require('../../errors/badDataChunk');
 
 class DataBlock {
+  // expectedData contains an instance of the expected command with its corresponding options
   constructor(data, store, expectedData) {
     this.store = store;
     this.data = data;
@@ -11,15 +12,16 @@ class DataBlock {
 
   validateDataBlock() {
     // byteLength -> returns the number of bytes required to store a string
-    this.expectedData.options = this.expectedData.convertDataArrayToObject();
-    const optionsAsObject = this.expectedData.options;
-    const { bytes, noreply } = optionsAsObject;
+    const optionsAsObject = this.expectedData.convertDataArrayToObject();
+    this.expectedData.setOptions(optionsAsObject);
+    const { bytes, noreply } = this.expectedData.getOptions();
     if (Buffer.byteLength(this.data) !== bytes) throw new WrongByteLengthError(noreply);
   }
 
   execute() {
     this.validateDataBlock();
-    this.expectedData.options = { ...this.expectedData.options, value: this.data };
+    const optionsWithValue = { ...this.expectedData.options, value: this.data };
+    this.expectedData.setOptions(optionsWithValue);
     const response = this.expectedData.doStoreOperation(this.store);
     return { response };
   }
