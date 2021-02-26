@@ -5,17 +5,12 @@ const { WrongArgumentNumberError } = require('../../errors/syntax');
 const { EMPTY_SPACE } = require('../../constants/index');
 
 class Storage {
-  constructor(options, store) {
+  constructor(options) {
     this.options = options;
-    this.store = store;
   }
 
   isFloat(numberAsString) {
     return numberAsString.indexOf('.') !== -1;
-  }
-
-  getStore() {
-    return this.store;
   }
 
   convertToNumber(string) {
@@ -57,14 +52,13 @@ class Storage {
   execute() {
     this.validateOptionsLength();
     this.validateNumberOptions();
-    this.options.splice(0, 0, this);
-    return { response: this.getOutput(), data: this.options };
+    return { response: this.getOutput(), data: this };
   }
 
-  convertDataToObject(expectedData) {
-    const [commandInstance, key, flags, exptime, bytes, noreply] = expectedData;
+  convertDataArrayToObject() {
+    const [key, flags, exptime, bytes, noreply] = this.options;
     return {
-      commandInstance, key, flags, exptime, bytes, noreply,
+      key, flags, exptime, bytes, noreply,
     };
   }
 }

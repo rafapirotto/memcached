@@ -1,7 +1,9 @@
 ![Build status](https://github.com/rafapirotto/memcached/actions/workflows/node.js.yml/badge.svg)
 ![code size](https://img.shields.io/github/languages/code-size/rafapirotto/memcached)
 ![repo size](https://img.shields.io/github/repo-size/rafapirotto/memcached)
-![lastcommit](https://img.shields.io/github/last-commit/rafapirotto/memcached )
+![lastcommit](https://img.shields.io/github/last-commit/rafapirotto/memcached)
+![version](https://img.shields.io/github/v/release/rafapirotto/memcached)
+![release date](https://img.shields.io/github/release-date/rafapirotto/memcached)
 
 
 # memcached server

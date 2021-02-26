@@ -6,21 +6,21 @@ class DataBlock {
   constructor(data, store, expectedData) {
     this.store = store;
     this.data = data;
-    const commandInstance = expectedData[0];
-    this.expectedData = commandInstance.convertDataToObject(expectedData);
+    this.expectedData = expectedData;
   }
 
   validateDataBlock() {
     // byteLength -> returns the number of bytes required to store a string
-    const { bytes, noreply } = this.expectedData;
+    this.expectedData.options = this.expectedData.convertDataArrayToObject();
+    const optionsAsObject = this.expectedData.options;
+    const { bytes, noreply } = optionsAsObject;
     if (Buffer.byteLength(this.data) !== bytes) throw new WrongByteLengthError(noreply);
   }
 
   execute() {
     this.validateDataBlock();
-    const objToExecute = { ...this.expectedData, value: this.data };
-    const { commandInstance } = objToExecute;
-    const response = commandInstance.doStoreOperation(objToExecute);
+    this.expectedData.options = { ...this.expectedData.options, value: this.data };
+    const response = this.expectedData.doStoreOperation(this.store);
     return { response };
   }
 }

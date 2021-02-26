@@ -3,21 +3,23 @@ const { STORED, NOT_STORED } = require('../../constants/messages');
 const { EMPTY_SPACE, NO_REPLY } = require('../../constants/index');
 
 class Append extends Storage {
-  constructor(options, store) {
-    super(options, store);
+  constructor(options) {
+    super(options);
   }
 
   execute() {
     return super.execute();
   }
 
-  doStoreOperation(objToExecute) {
-    const { noreply } = objToExecute;
-    const obj = super.getStore().find(objToExecute.key);
+  doStoreOperation(store) {
+    const {
+      noreply, bytes, value, key,
+    } = this.options;
+    const obj = store.find(key);
     if (obj) {
-      obj.bytes += objToExecute.bytes;
-      obj.value += objToExecute.value;
-      super.getStore().update(obj);
+      obj.bytes += bytes;
+      obj.value += value;
+      store.update(obj);
     }
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return obj ? STORED : NOT_STORED;

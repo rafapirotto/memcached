@@ -28,27 +28,27 @@ describe('connection', () => {
       describe('expected data from the set command', () => {
         build(connection, store);
         it('should return an instance of the set command', () => {
-          const actual = socket.expectedData[0] instanceof Set;
+          const actual = socket.expectedData instanceof Set;
           const expected = true;
           assert.strictEqual(actual, expected);
         });
         it('should return the corresponding key', () => {
-          const actual = socket.expectedData[1];
+          const actual = socket.expectedData.options[0];
           const expected = key;
           assert.strictEqual(actual, expected);
         });
         it('should return the corresponding flags', () => {
-          const actual = socket.expectedData[2];
+          const actual = socket.expectedData.options[1];
           const expected = flags;
           assert.strictEqual(actual, expected);
         });
         it('should return the corresponding exptime', () => {
-          const actual = socket.expectedData[3];
+          const actual = socket.expectedData.options[2];
           const expected = exptime;
           assert.strictEqual(actual, expected);
         });
         it('should return the corresponding bytes', () => {
-          const actual = socket.expectedData[4];
+          const actual = socket.expectedData.options[3];
           const expected = bytes;
           assert.strictEqual(actual, expected);
         });
@@ -111,8 +111,8 @@ describe('connection', () => {
       const connection = new Connection(socket, data);
       build(connection, store);
       it('should return an array of length 5 with the corresponding expectedData', () => {
-        const actual = connection.getExpectedData().length;
-        const expected = 5;
+        const actual = connection.getExpectedData().options.length;
+        const expected = 4;
         assert.strictEqual(actual, expected);
       });
     });

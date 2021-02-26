@@ -32,18 +32,19 @@ const create = (parsedRequest, expectedData, store) => {
     case COMMANDS.gets:
       return new Gets(options, store);
     case COMMANDS.set:
-      return new Set(options, store);
+      return new Set(options);
     case COMMANDS.add:
-      return new Add(options, store);
+      return new Add(options);
     case COMMANDS.replace:
-      return new Replace(options, store);
+      return new Replace(options);
     case COMMANDS.append:
-      return new Append(options, store);
+      return new Append(options);
     case COMMANDS.prepend:
-      return new Prepend(options, store);
+      return new Prepend(options);
     case COMMANDS.cas:
-      return new Cas(options, store);
+      return new Cas(options);
     default:
+      // 'command' here means the data sent
       return new DataBlock(command, store, expectedData);
   }
 };

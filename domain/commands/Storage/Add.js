@@ -3,20 +3,18 @@ const { STORED, NOT_STORED } = require('../../constants/messages');
 const { EMPTY_SPACE, NO_REPLY } = require('../../constants/index');
 
 class Add extends Storage {
-  constructor(options, store) {
-    super(options, store);
+  constructor(options) {
+    super(options);
   }
 
   execute() {
     return super.execute();
   }
 
-  doStoreOperation(objToExecute) {
-    const {
-      noreply,
-    } = objToExecute;
-    const { found } = super.getStore().customFind(objToExecute.key);
-    if (!found) super.getStore().insert(objToExecute);
+  doStoreOperation(store) {
+    const { noreply, key } = this.options;
+    const { found } = store.customFind(key);
+    if (!found) store.insert(this.options);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     return found ? NOT_STORED : STORED;
   }

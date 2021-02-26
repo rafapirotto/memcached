@@ -16,9 +16,12 @@ const key = 'new_key';
 const flags = '0';
 const exptime = '3600';
 const bytes = '2';
-const noreply = 'noreply';
 
-const getDataBlockCommandInstance = (parsedRequest, expectedData) => {
+const getStorageParsedRequest = (command) => [command, key, flags, exptime, bytes];
+
+const getRetrievalParsedRequest = (command) => [command, key];
+
+const getCommandInstance = (parsedRequest, expectedData) => {
   const command = create(
     parsedRequest,
     expectedData,
@@ -27,27 +30,7 @@ const getDataBlockCommandInstance = (parsedRequest, expectedData) => {
   return command;
 };
 
-const getStorageCommandInstance = (command, expectedData, request = null) => {
-  const parsedRequest = !request ? [command, key, flags, exptime, bytes, noreply] : request;
-  const commandToReturn = create(
-    parsedRequest,
-    expectedData,
-    store,
-  );
-  return commandToReturn;
-};
-
-const getRetrievalCommandInstance = (command, expectedData, request = null) => {
-  const parsedRequest = !request ? [command, key] : request;
-  const commandToReturn = create(
-    parsedRequest,
-    expectedData,
-    store,
-  );
-  return commandToReturn;
-};
-
-const getExpectedData = () => [getStorageCommandInstance('set', null), key, flags, exptime, bytes];
+const getExpectedData = () => new Set([key, flags, exptime, bytes]);
 
 describe('commandFactory', () => {
   after(() => {
@@ -58,7 +41,8 @@ describe('commandFactory', () => {
       describe('storage commands', () => {
         describe('Set', () => {
           it('should return an instance of the Set command', () => {
-            const command = getStorageCommandInstance('set', null);
+            const parsedRequest = getStorageParsedRequest('set');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Set;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -66,7 +50,8 @@ describe('commandFactory', () => {
         });
         describe('Add', () => {
           it('should return an instance of the Add command', () => {
-            const command = getStorageCommandInstance('add', null);
+            const parsedRequest = getStorageParsedRequest('add');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Add;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -74,7 +59,8 @@ describe('commandFactory', () => {
         });
         describe('Replace', () => {
           it('should return an instance of the Replace command', () => {
-            const command = getStorageCommandInstance('replace', null);
+            const parsedRequest = getStorageParsedRequest('replace');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Replace;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -82,7 +68,8 @@ describe('commandFactory', () => {
         });
         describe('Append', () => {
           it('should return an instance of the Append command', () => {
-            const command = getStorageCommandInstance('append', null);
+            const parsedRequest = getStorageParsedRequest('append');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Append;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -90,7 +77,8 @@ describe('commandFactory', () => {
         });
         describe('Prepend', () => {
           it('should return an instance of the Prepend command', () => {
-            const command = getStorageCommandInstance('prepend', null);
+            const parsedRequest = getStorageParsedRequest('prepend');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Prepend;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -98,7 +86,8 @@ describe('commandFactory', () => {
         });
         describe('Cas', () => {
           it('should return an instance of the Cas command', () => {
-            const command = getStorageCommandInstance('cas', null);
+            const parsedRequest = getStorageParsedRequest('cas');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Cas;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -108,7 +97,8 @@ describe('commandFactory', () => {
       describe('retrieval commands', () => {
         describe('Get', () => {
           it('should return an instance of the Get command', () => {
-            const command = getRetrievalCommandInstance('get', null);
+            const parsedRequest = getRetrievalParsedRequest('get');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Get;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -116,7 +106,8 @@ describe('commandFactory', () => {
         });
         describe('Gets', () => {
           it('should return an instance of the Gets command', () => {
-            const command = getRetrievalCommandInstance('gets', null);
+            const parsedRequest = getRetrievalParsedRequest('gets');
+            const command = getCommandInstance(parsedRequest, null);
             const actual = command instanceof Gets;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -127,7 +118,9 @@ describe('commandFactory', () => {
         describe('DataBlock', () => {
           it('should throw an instance of InvalidCommandError', () => {
             try {
-              getDataBlockCommandInstance(['datablock'], null);
+              const parsedRequest = ['datablock'];
+              const command = getCommandInstance(parsedRequest, null, null);
+              command.execute();
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof InvalidCommandError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -143,7 +136,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getStorageCommandInstance('set', expectedData);
+              const parsedRequest = getStorageParsedRequest('set');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -155,7 +149,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getStorageCommandInstance('add', expectedData);
+              const parsedRequest = getStorageParsedRequest('add');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -167,7 +162,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getStorageCommandInstance('replace', expectedData);
+              const parsedRequest = getStorageParsedRequest('replace');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -179,7 +175,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getStorageCommandInstance('append', expectedData);
+              const parsedRequest = getStorageParsedRequest('append');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -191,7 +188,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getStorageCommandInstance('prepend', expectedData);
+              const parsedRequest = getStorageParsedRequest('prepend');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -205,7 +203,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getRetrievalCommandInstance('get', expectedData);
+              const parsedRequest = getRetrievalParsedRequest('get');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -217,7 +216,8 @@ describe('commandFactory', () => {
           it('should throw an instance of DataExpectedError', () => {
             try {
               const expectedData = getExpectedData();
-              getRetrievalCommandInstance('gets', expectedData);
+              const parsedRequest = getRetrievalParsedRequest('gets');
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof DataExpectedError) assert.strictEqual(e.message, BAD_DATA_CHUNK);
@@ -228,7 +228,8 @@ describe('commandFactory', () => {
         describe('data block', () => {
           it('should return an instance of the DataBlock command', () => {
             const expectedData = getExpectedData();
-            const command = getDataBlockCommandInstance(['datablock'], expectedData);
+            const parsedRequest = ['datablock'];
+            const command = getCommandInstance(parsedRequest, expectedData);
             const actual = command instanceof DataBlock;
             const expected = true;
             assert.strictEqual(actual, expected);
@@ -241,7 +242,9 @@ describe('commandFactory', () => {
         describe('Set', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getStorageCommandInstance('set', null, ['set']);
+              const expectedData = getExpectedData();
+              const parsedRequest = ['set'];
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -252,7 +255,9 @@ describe('commandFactory', () => {
         describe('Add', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getStorageCommandInstance('add', null, ['add']);
+              const expectedData = getExpectedData();
+              const parsedRequest = ['add'];
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -263,7 +268,9 @@ describe('commandFactory', () => {
         describe('Replace', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getStorageCommandInstance('replace', null, ['replace']);
+              const expectedData = getExpectedData();
+              const parsedRequest = ['replace'];
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -274,7 +281,9 @@ describe('commandFactory', () => {
         describe('Append', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getStorageCommandInstance('append', null, ['append']);
+              const expectedData = getExpectedData();
+              const parsedRequest = ['append'];
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -285,7 +294,9 @@ describe('commandFactory', () => {
         describe('Prepend', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getStorageCommandInstance('prepend', null, ['prepend']);
+              const expectedData = getExpectedData();
+              const parsedRequest = ['prepend'];
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -298,7 +309,9 @@ describe('commandFactory', () => {
         describe('Get', () => {
           it('should throw an instance of NoOptionsError', () => {
             try {
-              getRetrievalCommandInstance('get', null, ['get']);
+              const expectedData = getExpectedData();
+              const parsedRequest = ['get'];
+              getCommandInstance(parsedRequest, expectedData);
               assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
             } catch (e) {
               if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);
@@ -308,7 +321,9 @@ describe('commandFactory', () => {
           describe('Gets', () => {
             it('should throw an instance of NoOptionsError', () => {
               try {
-                getRetrievalCommandInstance('gets', null, ['gets']);
+                const expectedData = getExpectedData();
+                const parsedRequest = ['gets'];
+                getCommandInstance(parsedRequest, expectedData);
                 assert.fail(EXPECTED_EXCEPTION_NOT_THROWN);
               } catch (e) {
                 if (e instanceof NoOptionsError) assert.strictEqual(e.message, ERROR_MESSAGE);

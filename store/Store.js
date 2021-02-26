@@ -44,7 +44,6 @@ class Store {
     // this syntax is used to avoid side effects
     const objCopy = { ...obj };
     delete objCopy.noreply;
-    delete objCopy.commandInstance;
     return objCopy;
   }
 

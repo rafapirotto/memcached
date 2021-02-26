@@ -57,8 +57,8 @@ describe('storage', () => {
       describe('correct data length', () => {
         it('should return 5', () => {
           const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
-          const actual = result.data.length;
-          const expected = 5;
+          const actual = result.data.options.length;
+          const expected = 4;
           assert.strictEqual(actual, expected);
         });
       });
@@ -66,7 +66,7 @@ describe('storage', () => {
         describe('command', () => {
           it('should return an instance of the Append command', () => {
             const result = getResult(`append ${key} ${flags} ${exptime} ${bytes}`);
-            const actual = result.data[0] instanceof Append;
+            const actual = result.data instanceof Append;
             const expected = true;
             assert.strictEqual(actual, expected);
           });
@@ -74,7 +74,7 @@ describe('storage', () => {
         describe('key', () => {
           it('should return the corresponding key', () => {
             const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
-            const actual = result.data[1];
+            const actual = result.data.options[0];
             const expected = key;
             assert.strictEqual(actual, expected);
           });
@@ -82,7 +82,7 @@ describe('storage', () => {
         describe('flags', () => {
           it('should return the corresponding flags', () => {
             const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
-            const actual = result.data[2];
+            const actual = result.data.options[1];
             const expected = flags;
             assert.strictEqual(actual, expected);
           });
@@ -90,7 +90,7 @@ describe('storage', () => {
         describe('exptime', () => {
           it('should return the corresponding exptime', () => {
             const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
-            const actual = result.data[3];
+            const actual = result.data.options[2];
             const expected = exptime;
             assert.strictEqual(actual, expected);
           });
@@ -98,7 +98,7 @@ describe('storage', () => {
         describe('bytes', () => {
           it('should return the corresponding bytes', () => {
             const result = getResult(`add ${key} ${flags} ${exptime} ${bytes}`);
-            const actual = result.data[4];
+            const actual = result.data.options[3];
             const expected = bytes;
             assert.strictEqual(actual, expected);
           });
@@ -157,7 +157,7 @@ describe('storage', () => {
               const dataString = `add ${key} ${flags} -${exptime} ${bytes}`;
               const command = getCommandInstance(dataString);
               const result = command.execute();
-              const actual = result.data[3];
+              const actual = result.data.options[2];
               const expected = -exptime;
               assert.strictEqual(actual, expected);
             });

@@ -9,8 +9,8 @@ const {
 } = require('../../errors/badCommandLine');
 
 class Cas extends Storage {
-  constructor(options, store) {
-    super(options, store);
+  constructor(options) {
+    super(options);
   }
 
   execute() {
@@ -48,22 +48,22 @@ class Cas extends Storage {
     if (this.optionsLengthIsInvalid()) throw new WrongArgumentNumberError();
   }
 
-  doStoreOperation(objToExecute) {
-    const { noreply } = objToExecute;
-    const retrievedObj = super.getStore().find(objToExecute.key);
+  doStoreOperation(store) {
+    const { noreply, key, cas } = this.options;
+    const retrievedObj = store.find(key);
     if (noreply === NO_REPLY) return EMPTY_SPACE;
     if (!retrievedObj) return NOT_FOUND;
-    if (objToExecute.cas === retrievedObj.cas) {
-      super.getStore().update(objToExecute);
+    if (cas === retrievedObj.cas) {
+      store.update(this.options);
       return STORED;
     }
     return EXISTS;
   }
 
-  convertDataToObject(expectedData) {
-    const [commandInstance, key, flags, exptime, bytes, cas, noreply] = expectedData;
+  convertDataArrayToObject() {
+    const [key, flags, exptime, bytes, cas, noreply] = this.options;
     return {
-      commandInstance, key, flags, exptime, bytes, cas, noreply,
+      key, flags, exptime, bytes, cas, noreply,
     };
   }
 }
