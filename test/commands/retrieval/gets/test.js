@@ -30,11 +30,6 @@ const getOutput = (keys) => {
 };
 
 describe('gets', () => {
-  /*
-  only toString() and getOutput() methods are tested
-  reason: execute() was already tested in the retrieval command tests
-  because it just calls the superclass method
-  */
   after(() => {
     store.initialize();
   });

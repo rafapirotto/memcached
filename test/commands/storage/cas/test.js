@@ -37,11 +37,6 @@ const thirdOptions = [testKey, thirdFlags, thirdExptime, thirdBytes, thirdCas];
 const thirdOptionsWithNoReply = secondOptions.concat([noreply]);
 
 describe('cas', () => {
-  /*
-  execute() method not tested
-  reason: was already tested in the storage command tests
-  because it just calls the superclass method
-  */
   after(() => {
     store.initialize();
   });

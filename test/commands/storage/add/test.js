@@ -22,11 +22,6 @@ const secondOptions = [testKey, secondFlags, secondExptime, secondBytes];
 const secondOptionsWithNoReply = secondOptions.concat([noreply]);
 
 describe('add', () => {
-  /*
-  only doStoreOperation() method is tested
-  reason: execute() was already tested in the storage command tests
-  because it just calls the superclass method
-  */
   after(() => {
     store.initialize();
   });
