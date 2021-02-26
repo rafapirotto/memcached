@@ -8,9 +8,9 @@ const build = (connection, store) => {
     connection.getExpectedData(),
     store,
   );
-  const result = command.execute();
-  connection.setExpectedData(result.data);
-  connection.sendResponse(result.response);
+  const { response, data } = command.execute();
+  connection.setExpectedData(data);
+  connection.sendResponse(response);
 };
 
 module.exports = { build };
