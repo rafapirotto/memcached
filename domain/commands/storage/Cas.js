@@ -9,14 +9,6 @@ const {
 } = require('../../errors/badCommandLine');
 
 class Cas extends Storage {
-  constructor(options) {
-    super(options);
-  }
-
-  convertToNumber(string) {
-    return Number(string);
-  }
-
   isInvalidOption(index) {
     const option = this.options[index];
     const optionAsInt = this.convertToNumber(option);

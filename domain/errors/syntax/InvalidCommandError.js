@@ -1,9 +1,5 @@
 const SyntaxError = require('./SyntaxError');
 
-class InvalidCommandError extends SyntaxError {
-  constructor() {
-    super();
-  }
-}
+class InvalidCommandError extends SyntaxError { }
 
 module.exports = InvalidCommandError;

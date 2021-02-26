@@ -3,10 +3,6 @@ const { STORED } = require('../../constants/messages');
 const { EMPTY_SPACE, NO_REPLY } = require('../../constants/index');
 
 class Set extends Storage {
-  constructor(options) {
-    super(options);
-  }
-
   doStoreOperation(store) {
     const { key, noreply } = this.options;
     const { found } = store.customFind(key);

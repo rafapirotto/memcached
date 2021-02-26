@@ -2,10 +2,6 @@ const { TERMINATOR } = require('../../constants/index');
 const Retrieval = require('./Retrieval');
 
 class Get extends Retrieval {
-  constructor(options, store) {
-    super(options, store);
-  }
-
   toString(obj) {
     const {
       key, flags, bytes, value,

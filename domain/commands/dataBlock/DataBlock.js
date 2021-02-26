@@ -12,8 +12,8 @@ class DataBlock {
 
   validateDataBlock() {
     // byteLength -> returns the number of bytes required to store a string
-    const optionsAsObject = this.expectedData.convertDataArrayToObject();
-    this.expectedData.setOptions(optionsAsObject);
+    const optionsObject = this.expectedData.convertDataArrayToObject();
+    this.expectedData.setOptions(optionsObject);
     const { bytes, noreply } = this.expectedData.getOptions();
     if (Buffer.byteLength(this.data) !== bytes) throw new WrongByteLengthError(noreply);
   }

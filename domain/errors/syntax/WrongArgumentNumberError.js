@@ -1,9 +1,5 @@
 const SyntaxError = require('./SyntaxError');
 
-class WrongArgumentNumberError extends SyntaxError {
-  constructor() {
-    super();
-  }
-}
+class WrongArgumentNumberError extends SyntaxError { }
 
 module.exports = WrongArgumentNumberError;

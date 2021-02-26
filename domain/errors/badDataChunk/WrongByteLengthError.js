@@ -1,9 +1,5 @@
 const BadDataChunkError = require('./BadDataChunkError');
 
-class WrongByteLengthError extends BadDataChunkError {
-  constructor(noreply) {
-    super(noreply);
-  }
-}
+class WrongByteLengthError extends BadDataChunkError { }
 
 module.exports = WrongByteLengthError;

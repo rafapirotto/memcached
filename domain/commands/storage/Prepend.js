@@ -3,10 +3,6 @@ const { STORED, NOT_STORED } = require('../../constants/messages');
 const { EMPTY_SPACE, NO_REPLY } = require('../../constants/index');
 
 class Prepend extends Storage {
-  constructor(options) {
-    super(options);
-  }
-
   doStoreOperation(store) {
     const {
       noreply, key, bytes, value,

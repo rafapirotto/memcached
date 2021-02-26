@@ -1,9 +1,5 @@
 const BadCommandLineError = require('./BadCommandLineError');
 
-class BadCommandLineFormatError extends BadCommandLineError {
-  constructor() {
-    super();
-  }
-}
+class BadCommandLineFormatError extends BadCommandLineError { }
 
 module.exports = BadCommandLineFormatError;
