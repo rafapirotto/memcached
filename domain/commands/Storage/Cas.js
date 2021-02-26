@@ -13,10 +13,6 @@ class Cas extends Storage {
     super(options);
   }
 
-  execute() {
-    return super.execute();
-  }
-
   convertToNumber(string) {
     return Number(string);
   }

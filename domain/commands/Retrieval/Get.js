@@ -6,10 +6,6 @@ class Get extends Retrieval {
     super(options, store);
   }
 
-  execute() {
-    return super.execute();
-  }
-
   toString(obj) {
     const {
       key, flags, bytes, value,

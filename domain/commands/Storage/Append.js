@@ -7,10 +7,6 @@ class Append extends Storage {
     super(options);
   }
 
-  execute() {
-    return super.execute();
-  }
-
   doStoreOperation(store) {
     const {
       noreply, bytes, value, key,

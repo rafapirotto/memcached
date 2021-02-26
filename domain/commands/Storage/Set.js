@@ -7,10 +7,6 @@ class Set extends Storage {
     super(options);
   }
 
-  execute() {
-    return super.execute();
-  }
-
   doStoreOperation(store) {
     const { key, noreply } = this.options;
     const { found } = store.customFind(key);

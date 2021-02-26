@@ -7,10 +7,6 @@ class Prepend extends Storage {
     super(options);
   }
 
-  execute() {
-    return super.execute();
-  }
-
   doStoreOperation(store) {
     const {
       noreply, key, bytes, value,
