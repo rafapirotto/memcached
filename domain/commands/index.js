@@ -1,12 +1,12 @@
-const Get = require('./Retrieval/Get');
-const Gets = require('./Retrieval/Gets');
-const Set = require('./Storage/Set');
-const Add = require('./Storage/Add');
-const Replace = require('./Storage/Replace');
-const DataBlock = require('./DataBlock/DataBlock');
-const Append = require('./Storage/Append');
-const Prepend = require('./Storage/Prepend');
-const Cas = require('./Storage/Cas');
+const Get = require('./retrievall/Get');
+const Gets = require('./retrievall/Gets');
+const Set = require('./storagee/Set');
+const Add = require('./storagee/Add');
+const Replace = require('./storagee/Replace');
+const DataBlock = require('./dataBlockk/DataBlock');
+const Append = require('./storagee/Append');
+const Prepend = require('./storagee/Prepend');
+const Cas = require('./storagee/Cas');
 
 module.exports = {
   Get,
