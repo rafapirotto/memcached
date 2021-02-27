@@ -15,13 +15,22 @@ const PORT = process.env.PORT || DEFAULT_PORT;
 const IP = process.env.IP || DEFAULT_IP;
 const MAX_CONNECTIONS = process.env.MAX_CONNECTIONS || DEFAULT_MAX_CONNECTIONS;
 
-const handleData = (callback, errorCallback) => {
+const getConcurrentConnections = (server) => {
+  server.getConnections((error, count) => {
+    console.log(`Concurrent connections to the server: ${count}`);
+  });
+};
+
+const handleData = (data, socket) => {
+  console.log('data', data);
+  const connection = new Connection(socket, data);
   try {
-    callback();
+    build(connection, store);
   } catch (error) {
     const isClientError = error instanceof ClientError;
     const message = isClientError ? error.message : SERVER_ERROR;
-    errorCallback(message);
+    connection.setExpectedData(null);
+    connection.sendResponse(message);
   }
 };
 
@@ -29,16 +38,11 @@ const start = () => {
   const server = net.createServer((socket) => {
     server.maxConnections = MAX_CONNECTIONS;
     socket.on('data', (data) => {
-      const connection = new Connection(socket, data);
-      const errorCallback = (message) => {
-        connection.setExpectedData(null);
-        connection.sendResponse(message);
-      };
-      handleData(() => { build(connection, store); }, errorCallback);
+      handleData(data, socket);
     });
-
     socket.on('close', (data) => {
       console.log(`Client disconnected: ${socket.remoteAddress}:${socket.remotePort}`);
+      getConcurrentConnections(server);
     });
   });
 
@@ -60,9 +64,7 @@ const start = () => {
 
   server.on('connection', (socket) => {
     console.log(`Client connected: ${socket.remoteAddress}:${socket.remotePort}`);
-    server.getConnections((error, count) => {
-      console.log(`Concurrent connections to the server: ${count}`);
-    });
+    getConcurrentConnections(server);
   });
 
   listen();

@@ -3,37 +3,12 @@ const {
   STORED, NOT_FOUND, EXISTS,
 } = require('../../constants/messages');
 const { EMPTY_SPACE, NO_REPLY } = require('../../constants/index');
-const { WrongArgumentNumberError } = require('../../errors/syntax');
-const {
-  BadCommandLineFormatError,
-} = require('../../errors/badCommandLine');
 
 class Cas extends Storage {
-  isInvalidOption(index) {
-    const option = this.options[index];
-    const optionAsInt = this.convertToNumber(option);
-    const exptimeIndex = 2;
-    return Number.isNaN(optionAsInt)
-      || this.isFloat(option)
-      || (optionAsInt < 0 && exptimeIndex !== index);
-  }
-
-  validateNumberOptions() {
-    for (let index = 1; index < 5; index++) {
-      const isInvalid = this.isInvalidOption(index);
-      if (isInvalid) throw new BadCommandLineFormatError();
-      const option = this.options[index];
-      this.options[index] = this.convertToNumber(option);
-    }
-  }
-
-  optionsLengthIsInvalid() {
-    const optionNumber = this.options.length;
-    return optionNumber < 5 || optionNumber > 6;
-  }
-
-  validateOptionsLength() {
-    if (this.optionsLengthIsInvalid()) throw new WrongArgumentNumberError();
+  constructor(options) {
+    super(options);
+    this.minOptionLength = 5;
+    this.maxOptionLength = 6;
   }
 
   doStoreOperation(store) {

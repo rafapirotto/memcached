@@ -7,6 +7,8 @@ const { EMPTY_SPACE } = require('../../constants/index');
 class Storage {
   constructor(options) {
     this.setOptions(options);
+    this.minOptionLength = 4;
+    this.maxOptionLength = 5;
   }
 
   setOptions(options) {
@@ -35,12 +37,12 @@ class Storage {
   }
 
   validateNumberOptions() {
-    for (let index = 1; index < 4; index++) {
-      const option = this.options[index];
-      const optionAsInt = Number(option);
+    const min = this.minOptionLength;
+    for (let index = 1; index < min; index++) {
       const isInvalid = this.isInvalidOption(index);
       if (isInvalid) throw new BadCommandLineFormatError();
-      this.options[index] = optionAsInt;
+      const option = this.options[index];
+      this.options[index] = this.convertToNumber(option);
     }
   }
 
@@ -50,7 +52,9 @@ class Storage {
 
   optionsLengthIsInvalid() {
     const optionNumber = this.options.length;
-    return optionNumber < 4 || optionNumber > 5;
+    const min = this.minOptionLength;
+    const max = this.maxOptionLength;
+    return optionNumber < min || optionNumber > max;
   }
 
   validateOptionsLength() {

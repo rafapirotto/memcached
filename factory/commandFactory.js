@@ -3,7 +3,6 @@ const {
 } = require('../domain/commands/index');
 const { DataExpectedError } = require('../domain/errors/badDataChunk');
 const { NoOptionsError, InvalidCommandError } = require('../domain/errors/syntax');
-
 const { COMMANDS } = require('../domain/constants');
 
 const isCommand = (command) => {
