@@ -12,11 +12,11 @@ class Retrieval {
     return { response: this.getOutput(keys) };
   }
 
-  getOutput(keys, toStringCallback) {
+  getOutput(keys) {
     let response = EMPTY_SPACE;
     keys.forEach((key) => {
       const storeObj = this.store.find(key);
-      if (storeObj) response += toStringCallback(storeObj);
+      if (storeObj) response += this.toString(storeObj);
     });
     response += END;
     return response;

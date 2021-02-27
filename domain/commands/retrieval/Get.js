@@ -8,10 +8,6 @@ class Get extends Retrieval {
     } = obj;
     return `VALUE ${key} ${flags.toString()} ${bytes.toString()}${TERMINATOR}${value}${TERMINATOR}`;
   }
-
-  getOutput(keys) {
-    return super.getOutput(keys, this.toString);
-  }
 }
 
 module.exports = Get;
