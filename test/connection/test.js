@@ -110,7 +110,7 @@ describe('connection', () => {
       const data = stringToBuffer(`set ${key} ${flags} ${exptime} ${bytes}`);
       const connection = new Connection(socket, data);
       build(connection, store);
-      it('should return an array of length 5 with the corresponding expectedData', () => {
+      it('should return an array of length 4 with the corresponding expectedData', () => {
         const actual = connection.getExpectedData().options.length;
         const expected = 4;
         assert.strictEqual(actual, expected);
