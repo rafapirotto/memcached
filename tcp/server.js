@@ -22,7 +22,6 @@ const getConcurrentConnections = (server) => {
 };
 
 const handleData = (data, socket) => {
-  console.log('data', data);
   const connection = new Connection(socket, data);
   try {
     build(connection, store);
